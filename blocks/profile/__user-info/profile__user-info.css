@@ -1,0 +1,10 @@
+.profile__user-info {
+  margin: 16px 0 0;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFFFFF;
+}

@@ -1,0 +1,108 @@
+<!Doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Интерактивная страница о путешествиях">
+    <meta name="keywords" content="исследования, путешествия, профиль путешественника">
+    <meta name="author" content="Daria R">
+    <title>Mesto-Russia</title>
+    <link rel="stylesheet" href="vendor/normalize.css">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="pages/index.css">
+    <link rel="shortcut icon" href="images/logo-black.svg">
+  </head>
+  <body>
+    <div class="page">
+      <!-- Header -->
+      <header class="header page__content">
+        <img src="images/header-logo.svg" alt="Логотип Mesto Russia" class="header__logo">
+        <div class="header__line"></div>
+      </header>
+
+      <main>
+        <!-- Profile -->
+        <section class="profile page__content">
+          <div class="profile__info-wrap">
+            <img src="images/Cousteau-photo.jpg" alt="фото профиля" class="profile__avatar">
+            <div class="profile__info">
+              <h1 class="profile__username">Жак-Ив Кусто</h1>
+              <button class="profile__edit-button"></button>
+              <p class="profile__user-info">Исследователь океана</p>
+            </div>
+          </div>
+          <button class="profile__add-button"></button>
+        </section>
+
+        <!-- Popup -->
+        <section class="popup">
+          <form action="" class="popup__container">
+            <fieldset>
+              <label>
+                <input type="text" name="username">
+              </label>
+              <label>
+                <input type="text" name="user info">
+              </label>
+              <button class="submit-button">Сохранить</button>
+            </fieldset>
+          </form>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="page__content">
+          <ul class="gallery">
+            <li class="gallery__item">
+              <img src="images/photo-karachaevsk.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Карачаевск</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+            <li class="gallery__item">
+              <img src="images/photo-elbrus.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Гора Эльбрус</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+            <li class="gallery__item">
+              <img src="images/photo-dombay.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Домбай</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+            <li class="gallery__item">
+              <img src="images/photo-baltika.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Балтийское море</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+            <li class="gallery__item">
+              <img src="images/photo-gelendzhik.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Геленджик</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+            <li class="gallery__item">
+              <img src="images/photo-ural.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
+              <div class="gallery__content-text">
+                <h2 class="gallery__signature">Уральские горы</h2>
+                <button class="gallery__like"></button>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer page__content">
+        <p class="footer-text">&copy; 2021 Mesto Russia</p>
+      </footer>
+    </div>
+  </body>
+</html>

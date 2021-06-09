@@ -1,0 +1,9 @@
+.gallery {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 76px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  grid-template-rows: repeat(auto-fit, minmax(361px, 1fr));
+  gap: 20px 17px;
+}

@@ -1,0 +1,10 @@
+.profile__username {
+  margin: 0;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 48px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFFFFF;
+}

@@ -1,0 +1,11 @@
+.gallery__content-text {
+  max-width: 282px;
+  min-height: 79px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0 15px 0 21px;
+  background-color: #FFFFFF;
+}

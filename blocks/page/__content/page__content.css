@@ -1,0 +1,7 @@
+.page__content {
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-right: 200px;
+  padding-left: 200px;
+}
