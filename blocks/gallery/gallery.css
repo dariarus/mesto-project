@@ -4,6 +4,18 @@
   padding: 76px 0 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, 282px);
-  grid-template-rows: repeat(auto-fit, minmax(361px, 1fr));
   gap: 20px 17px;
+  justify-content: center;
+}
+
+@media screen and (max-width: 756px) {
+  .gallery {
+    padding: 38px 0 0;
+  }
+}
+
+@media screen and (max-width: 464px) {
+  .gallery {
+    padding: 36px 0 0;
+  }
 }

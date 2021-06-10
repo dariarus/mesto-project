@@ -8,3 +8,17 @@
   -moz-osx-font-smoothing: grayscale;
   color: #FFFFFF;
 }
+
+@media screen and (max-width: 648px) {
+  .profile__username {
+    font-size: 31px;
+    line-height: 37px;
+  }
+}
+
+@media screen and (max-width: 464px) {
+  .profile__username {
+    font-size: 27px;
+    line-height: 33px;
+  }
+}

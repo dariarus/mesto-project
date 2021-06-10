@@ -1,4 +1,5 @@
 .gallery__signature {
+  flex: 1;
   margin: 0;
   font-family: 'Inter', 'Arial', sans-serif;
   font-weight: 900;

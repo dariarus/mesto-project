@@ -2,3 +2,10 @@
   padding-top: 67px;
   padding-bottom: 60px;
 }
+
+@media screen and (max-width: 464px) {
+  .footer {
+    padding-top: 48px;
+    padding-bottom: 36px;
+  }
+}

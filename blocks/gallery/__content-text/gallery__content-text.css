@@ -1,7 +1,6 @@
 .gallery__content-text {
-  max-width: 282px;
-  min-height: 79px;
   box-sizing: border-box;
+  min-height: 79px;
   display: flex;
   justify-content: space-between;
   align-items: center;

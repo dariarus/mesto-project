@@ -8,15 +8,13 @@
     <meta name="keywords" content="исследования, путешествия, профиль путешественника">
     <meta name="author" content="Daria R">
     <title>Mesto-Russia</title>
-    <link rel="stylesheet" href="vendor/normalize.css">
-    <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="pages/index.css">
     <link rel="shortcut icon" href="images/logo-black.svg">
   </head>
   <body>
     <div class="page">
       <!-- Header -->
-      <header class="header page__content">
+      <header class="header page__header-content">
         <img src="images/header-logo.svg" alt="Логотип Mesto Russia" class="header__logo">
         <div class="header__line"></div>
       </header>
@@ -36,17 +34,19 @@
         </section>
 
         <!-- Popup -->
-        <section class="popup">
-          <form action="" class="popup__container">
-            <fieldset>
+        <section class="popup popup_opened">
+          <form action="URL" class="popup__container">
+            <h2 class="popup__form-name">Редактировать профиль</h2>
+            <fieldset class="popup__fieldset">
               <label>
-                <input type="text" name="username">
+                <input type="text" name="username" placeholder="Имя" class="popup__item">
               </label>
               <label>
-                <input type="text" name="user info">
+                <input type="text" name="about user" placeholder="О себе" class="popup__item">
               </label>
-              <button class="submit-button">Сохранить</button>
+              <button class="popup__save-button">Сохранить</button>
             </fieldset>
+            <button class="popup__close-icon"></button>
           </form>
         </section>
 
