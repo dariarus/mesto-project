@@ -1,4 +1,4 @@
-.gallery__like {
+.gallery-item__like {
   all: unset;
   width: 22px;
   height: 19px;
@@ -7,6 +7,6 @@
   transition: opacity .2s ease-in;
 }
 
-.gallery__like:hover {
+.gallery-item__like:hover {
   opacity: 50%;
 }

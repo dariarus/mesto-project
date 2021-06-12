@@ -1,10 +1,9 @@
-.gallery__content-text {
+.gallery-item__content-text {
   box-sizing: border-box;
-  min-height: 79px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0;
-  padding: 0 15px 0 21px;
+  padding: 25px 15px 31px 21px;
   background-color: #FFFFFF;
 }

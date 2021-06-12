@@ -13,8 +13,8 @@
 
 @media screen and (max-width: 510px) {
   .page__header-content {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 27px;
+    padding-left: 27px;
   }
 }
 

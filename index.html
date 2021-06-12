@@ -11,98 +11,108 @@
     <link rel="stylesheet" href="pages/index.css">
     <link rel="shortcut icon" href="images/logo-black.svg">
   </head>
+
   <body>
     <div class="page">
-      <!-- Header -->
-      <header class="header page__header-content">
-        <img src="images/header-logo.svg" alt="Логотип Mesto Russia" class="header__logo">
-        <div class="header__line"></div>
-      </header>
+      <div class="content">
+        <!-- Header -->
+        <header class="header page__header-content">
+          <img src="images/header-logo.svg" alt="Логотип Mesto Russia" class="header__logo">
+        </header>
 
-      <main>
-        <!-- Profile -->
-        <section class="profile page__content">
-          <div class="profile__info-wrap">
-            <img src="images/Cousteau-photo.jpg" alt="фото профиля" class="profile__avatar">
-            <div class="profile__info">
-              <h1 class="profile__username">Жак-Ив Кусто</h1>
-              <button class="profile__edit-button"></button>
-              <p class="profile__user-info">Исследователь океана</p>
+        <main>
+          <!-- Profile -->
+          <section class="profile page__content">
+            <div class="profile__info-wrap">
+              <img src="images/Cousteau-photo.jpg" alt="фото профиля" class="profile__avatar">
+              <div class="profile__info">
+                <div class="profile__edit-profile-wrap">
+                  <h1 class="profile__username">Жак-Ив Кусто</h1>
+                  <button type="button" aria-label="кнопка редактирования профиля"
+                          class="profile__edit-button"></button>
+                </div>
+                <p class="profile__user-info">Исследователь океана</p>
+              </div>
             </div>
-          </div>
-          <button class="profile__add-button"></button>
-        </section>
+            <button type="button" aria-label="кнопка для добавления новых карточек на страницу"
+                    class="profile__add-button"></button>
+          </section>
 
-        <!-- Popup -->
-        <section class="popup">
-          <form action="URL" class="popup__container">
+          <!-- Photo Gallery -->
+          <section class="page__content">
+            <ul class="gallery">
+              <li class="gallery-item">
+                <img src="images/photo-karachaevsk.jpg" alt="Фотография из галереи пользователя"
+                     class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Карачаевск</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+              <li class="gallery-item">
+                <img src="images/photo-elbrus.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Гора Эльбрус</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+              <li class="gallery-item">
+                <img src="images/photo-dombay.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Домбай</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+              <li class="gallery-item">
+                <img src="images/photo-baltika.jpg" alt="Фотография из галереи пользователя"
+                     class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Балтийское море</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+              <li class="gallery-item">
+                <img src="images/photo-gelendzhik.jpg" alt="Фотография из галереи пользователя"
+                     class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Геленджик</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+              <li class="gallery-item">
+                <img src="images/photo-ural.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
+                <div class="gallery-item__content-text">
+                  <h2 class="gallery-item__signature">Уральские горы</h2>
+                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </main>
+      </div>
+      <!-- Footer -->
+      <footer class="footer page__content">
+        <p class="footer__text">&copy; 2021 Mesto Russia</p>
+      </footer>
+
+      <!-- Popup -->
+      <div class="popup">
+        <div class="popup__container">
+          <form action="URL" name="profile edit form">
             <h2 class="popup__form-name">Редактировать профиль</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input type="text" name="username" placeholder="Имя" class="popup__item">
+                <input type="text" name="username" placeholder="Имя" class="popup__item" required>
               </label>
               <label>
-                <input type="text" name="about user" placeholder="О себе" class="popup__item">
+                <input type="text" name="about user" placeholder="О себе" class="popup__item" required>
               </label>
-              <button class="popup__save-button">Сохранить</button>
+              <button type="submit" class="popup__save-button">Сохранить</button>
             </fieldset>
-            <button class="popup__close-icon"></button>
+            <button type="button" aria-label="закрыть форму редактирования профиля" class="popup__close-icon"></button>
           </form>
-        </section>
-
-        <!-- Photo Gallery -->
-        <section class="page__content">
-          <ul class="gallery">
-            <li class="gallery__item">
-              <img src="images/photo-karachaevsk.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Карачаевск</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img src="images/photo-elbrus.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Гора Эльбрус</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img src="images/photo-dombay.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Домбай</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img src="images/photo-baltika.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Балтийское море</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img src="images/photo-gelendzhik.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Геленджик</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img src="images/photo-ural.jpg" alt="Фотография из галереи пользователя" class="gallery__photo">
-              <div class="gallery__content-text">
-                <h2 class="gallery__signature">Уральские горы</h2>
-                <button class="gallery__like"></button>
-              </div>
-            </li>
-          </ul>
-        </section>
-      </main>
-
-      <!-- Footer -->
-      <footer class="footer page__content">
-        <p class="footer-text">&copy; 2021 Mesto Russia</p>
-      </footer>
+        </div>
+      </div>
     </div>
   </body>
 </html>
