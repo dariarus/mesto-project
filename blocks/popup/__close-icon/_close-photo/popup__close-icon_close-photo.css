@@ -1,0 +1,29 @@
+.popup__close-icon_close-photo {
+  top: calc(-8px - 32px);
+  left: calc(100% + 8px);
+  width: 32px;
+  height: 32px;
+}
+
+@media screen and (max-width: 756px) {
+  .popup__close-icon_close-photo {
+    left: calc(100% - 32px);
+  }
+}
+
+@media screen and (max-width: 756px), (max-height: 443px) {
+  .popup__close-icon_close-photo {
+    top: calc(-20px - 30px);
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media screen and (max-width: 649px), (max-height: 450px) {
+  .popup__close-icon_close-photo {
+    top: calc(-16px - 20px);
+    left: calc(100% - 20px);
+    width: 20px;
+    height: 20px;
+  }
+}

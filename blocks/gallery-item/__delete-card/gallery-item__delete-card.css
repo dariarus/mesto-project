@@ -1,0 +1,15 @@
+.gallery-item__delete-card {
+  all: unset;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19px;
+  background-image: url('../../../images/icons/delete-card-icon.svg');
+  cursor: pointer;
+  transition: opacity .2s ease-in;
+}
+
+.gallery-item__delete-card:hover {
+  opacity: 60%;
+}

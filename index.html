@@ -1,15 +1,16 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html lang="ru">
+
   <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Интерактивная страница о путешествиях">
-    <meta name="keywords" content="исследования, путешествия, профиль путешественника">
-    <meta name="author" content="Daria R">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Интерактивная страница о путешествиях" name="description">
+    <meta content="исследования, путешествия, профиль путешественника" name="keywords">
+    <meta content="Daria R" name="author">
     <title>Mesto-Russia</title>
-    <link rel="stylesheet" href="pages/index.css">
-    <link rel="shortcut icon" href="images/logo-black.svg">
+    <link href="pages/index.css" rel="stylesheet">
+    <link href="images/logo-black.svg" rel="shortcut icon">
   </head>
 
   <body>
@@ -17,102 +18,108 @@
       <div class="content">
         <!-- Header -->
         <header class="header page__header-content">
-          <img src="images/header-logo.svg" alt="Логотип Mesto Russia" class="header__logo">
+          <img alt="Логотип Mesto Russia" class="header__logo" src="images/header-logo.svg">
         </header>
 
         <main>
           <!-- Profile -->
           <section class="profile page__content">
             <div class="profile__info-wrap">
-              <img src="images/Cousteau-photo.jpg" alt="фото профиля" class="profile__avatar">
+              <img alt="фото профиля" class="profile__avatar" src="images/Cousteau-photo.jpg">
               <div class="profile__info">
                 <div class="profile__edit-profile-wrap">
                   <h1 class="profile__username">Жак-Ив Кусто</h1>
-                  <button type="button" aria-label="кнопка редактирования профиля"
-                          class="profile__edit-button"></button>
+                  <button aria-label="кнопка редактирования профиля" class="profile__edit-button"
+                          data-popup-selector="#edit-profile-popup" type="button"></button>
                 </div>
                 <p class="profile__user-info">Исследователь океана</p>
               </div>
             </div>
-            <button type="button" aria-label="кнопка для добавления новых карточек на страницу"
-                    class="profile__add-button"></button>
+            <button aria-label="кнопка для добавления новых карточек на страницу" class="profile__add-button"
+                    data-popup-selector="#add-cards-popup" type="button"></button>
           </section>
 
           <!-- Photo Gallery -->
           <section class="page__content">
-            <ul class="gallery">
-              <li class="gallery-item">
-                <img src="images/photo-karachaevsk.jpg" alt="Фотография из галереи пользователя"
-                     class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Карачаевск</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-              <li class="gallery-item">
-                <img src="images/photo-elbrus.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Гора Эльбрус</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-              <li class="gallery-item">
-                <img src="images/photo-dombay.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Домбай</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-              <li class="gallery-item">
-                <img src="images/photo-baltika.jpg" alt="Фотография из галереи пользователя"
-                     class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Балтийское море</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-              <li class="gallery-item">
-                <img src="images/photo-gelendzhik.jpg" alt="Фотография из галереи пользователя"
-                     class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Геленджик</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-              <li class="gallery-item">
-                <img src="images/photo-ural.jpg" alt="Фотография из галереи пользователя" class="gallery-item__photo">
-                <div class="gallery-item__content-text">
-                  <h2 class="gallery-item__signature">Уральские горы</h2>
-                  <button type="button" aria-label="поставить лайк карточке" class="gallery-item__like"></button>
-                </div>
-              </li>
-            </ul>
+            <ul class="gallery"></ul>
           </section>
         </main>
       </div>
+
       <!-- Footer -->
       <footer class="footer page__content">
         <p class="footer__text">&copy; 2021 Mesto Russia</p>
       </footer>
 
-      <!-- Popup -->
-      <div class="popup">
+      <!-- Edit Profile Popup-->
+      <div class="popup popup_type_edit-profile">
         <div class="popup__container">
           <form action="URL" name="profile edit form">
             <h2 class="popup__form-name">Редактировать профиль</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input type="text" name="username" placeholder="Имя" class="popup__item" required>
+                <input class="popup__item popup__item_type_username" name="username" placeholder="Имя" required
+                       type="text">
               </label>
               <label>
-                <input type="text" name="about user" placeholder="О себе" class="popup__item" required>
+                <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" required
+                       type="text">
               </label>
-              <button type="submit" class="popup__save-button">Сохранить</button>
+              <button class="popup__save-button" type="submit">
+                Сохранить
+              </button>
             </fieldset>
-            <button type="button" aria-label="закрыть форму редактирования профиля" class="popup__close-icon"></button>
           </form>
+          <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
         </div>
       </div>
     </div>
+
+    <!-- Add Cards Popup -->
+    <div class="popup popup_type_add-card">
+      <div class="popup__container">
+        <form action="URL" name="add card form">
+          <h2 class="popup__form-name">Новое место</h2>
+          <fieldset class="popup__fieldset">
+            <label>
+              <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" required
+                     type="text">
+            </label>
+            <label>
+              <input class="popup__item popup__item_type_link" name="picture link" placeholder="Ссылка на картинку"
+                     required type="text">
+            </label>
+            <button class="popup__save-button" type="submit">Создать</button>
+          </fieldset>
+        </form>
+        <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
+      </div>
+    </div>
+
+    <!-- Opened-photo Popup -->
+    <div class="popup popup_type_open-photo">
+      <div class="popup__opened-photo-container">
+        <img alt="Фотография из галереи пользователя" class="popup__opened-image" src=""/>
+        <h2 class="popup__image-signature"></h2>
+        <button aria-label="закрыть форму" class="popup__close-icon popup__close-icon_close-photo"
+                type="button"></button>
+      </div>
+    </div>
+
+    <!-- Card template -->
+    <template id="card-template">
+      <li class="gallery-item">
+        <img alt="" class="gallery-item__photo" src=""/>
+        <button aria-label="удалить карточку" class="gallery-item__delete-card" type="button"></button>
+        <div class="gallery-item__content-text">
+          <h2 class="gallery-item__signature"></h2>
+          <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+        </div>
+      </li>
+    </template>
+
+    <script src="scripts/initial-cards.js"></script>
+    <script src="scripts/index.js"></script>
   </body>
+
 </html>

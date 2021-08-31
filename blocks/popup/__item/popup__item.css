@@ -14,6 +14,7 @@
 }
 
 ::-webkit-input-placeholder {
+  font-family: 'Inter', 'Arial', sans-serif;
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
@@ -21,6 +22,7 @@
 }
 
 ::-moz-placeholder {
+  font-family: 'Inter', 'Arial', sans-serif;
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
@@ -28,6 +30,7 @@
 }
 
 :-moz-placeholder {
+  font-family: 'Inter', 'Arial', sans-serif;
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
@@ -35,12 +38,12 @@
 }
 
 :-ms-input-placeholder {
+  font-family: 'Inter', 'Arial', sans-serif;
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
   color: #000;
 }
-
 
 @media screen and (max-height: 320px) {
   .popup__item {
