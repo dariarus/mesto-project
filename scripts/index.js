@@ -10,6 +10,9 @@ const popupEditProfile = document.querySelector('.popup_type_edit-profile');
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-icon');
 const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
+// выбор попапа фото и кнопки закрытия внутри него
+const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
+const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
 
 // (6.) поиск контейнера для карточек в DOM
 const cardContainer = document.querySelector('.gallery');
@@ -22,9 +25,10 @@ window.onload = function () {
   initialCards.forEach(item => {
     addCard(item, cardContainer);
   });
-  // выбор попапа и кнопки закрытия внутри него
-  const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
-  const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
+  addListenerToCLosePopup();
+  document.querySelector('.popup__opened-photo-container').addEventListener('click', (evt) => {
+    evt.stopPropagation();
+  });
   // обработчик событий для кнопки закрытия попапа с фотографией
   buttonClosePhoto.addEventListener('click', () => {
     closePopup(popupOpenPhoto);
@@ -37,18 +41,18 @@ function openPopup(popup) {
 }
 
 // функция открытия попапа с изображением из карточки
-function openPopupImage (card) {
+function openPopupImage(card) {
   // выбор попапа
   const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
   // открытие попапа
-    openPopup(popupOpenPhoto);
-    // выбор контейнера попапа
-    const image = popupOpenPhoto.querySelector('.popup__opened-image');
-    // заполнение контейнера нужным содержимым (изображение + подпись) в зависимости от кликнутой картинки
-    image.src = card.link;
-    image.alt = card.name;
-    const signature = popupOpenPhoto.querySelector('.popup__image-signature');
-    signature.textContent = card.name;
+  openPopup(popupOpenPhoto);
+  // выбор контейнера попапа
+  const image = popupOpenPhoto.querySelector('.popup__opened-image');
+  // заполнение контейнера нужным содержимым (изображение + подпись) в зависимости от кликнутой картинки
+  image.src = card.link;
+  image.alt = card.name;
+  const signature = popupOpenPhoto.querySelector('.popup__image-signature');
+  signature.textContent = card.name;
 }
 
 
@@ -72,6 +76,26 @@ buttonCloseAddCard.addEventListener('click', () => {
   closePopup(popupAddCard);
 });
 
+// обработчик событий клавиши Esc для закрытия попапа редактирования профиля
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    document.querySelectorAll('.popup_opened').forEach(popupItem => {
+        closePopup(popupItem);
+      });
+  }
+});
+
+// обработчик события клика мыши на оверлей для закрытия попапов
+function addListenerToCLosePopup() {
+  const popupList = document.querySelectorAll('.popup');
+  popupList.forEach(popupListItem => {
+    popupListItem.addEventListener('click', (evt) => {
+      closePopup(evt.target);
+      // отмена всплытия события до .popup, чтобы можно было воспользоваться формой в .popup__container
+      evt.stopPropagation();
+    });
+  });
+}
 
 // 1.2 Поля формы. Отображение значений по умолчанию в полях формы редактирования профиля
 
@@ -157,7 +181,7 @@ function createCard(card) {
 
   // обработчик событий для кнопки открытия попапа с фотографией с вызовом функции добавления в попап нужной информации из карточек
   buttonOpenPhoto.addEventListener('click', () => {
-    openPopupImage (card);
+    openPopupImage(card);
   });
 
   // вернуть готовую карточку со всеми внутренними примочками (лайк, удаление, открытие фото)

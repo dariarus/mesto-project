@@ -65,61 +65,58 @@
                 <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" required
                        type="text">
               </label>
-              <button class="popup__save-button" type="submit">
-                Сохранить
-              </button>
+              <button class="popup__save-button" type="submit">Сохранить</button>
             </fieldset>
           </form>
           <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
         </div>
       </div>
-    </div>
 
-    <!-- Add Cards Popup -->
-    <div class="popup popup_type_add-card">
-      <div class="popup__container">
-        <form action="URL" name="add card form">
-          <h2 class="popup__form-name">Новое место</h2>
-          <fieldset class="popup__fieldset">
-            <label>
-              <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" required
-                     type="text">
-            </label>
-            <label>
-              <input class="popup__item popup__item_type_link" name="picture link" placeholder="Ссылка на картинку"
-                     required type="text">
-            </label>
-            <button class="popup__save-button" type="submit">Создать</button>
-          </fieldset>
-        </form>
-        <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
-      </div>
-    </div>
-
-    <!-- Opened-photo Popup -->
-    <div class="popup popup_type_open-photo">
-      <div class="popup__opened-photo-container">
-        <img alt="Фотография из галереи пользователя" class="popup__opened-image" src=""/>
-        <h2 class="popup__image-signature"></h2>
-        <button aria-label="закрыть форму" class="popup__close-icon popup__close-icon_close-photo"
-                type="button"></button>
-      </div>
-    </div>
-
-    <!-- Card template -->
-    <template id="card-template">
-      <li class="gallery-item">
-        <img alt="" class="gallery-item__photo" src=""/>
-        <button aria-label="удалить карточку" class="gallery-item__delete-card" type="button"></button>
-        <div class="gallery-item__content-text">
-          <h2 class="gallery-item__signature"></h2>
-          <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+      <!-- Add Cards Popup -->
+      <div class="popup popup_type_add-card">
+        <div class="popup__container">
+          <form action="URL" name="add card form">
+            <h2 class="popup__form-name">Новое место</h2>
+            <fieldset class="popup__fieldset">
+              <label>
+                <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" required
+                       type="text">
+              </label>
+              <label>
+                <input class="popup__item popup__item_type_link" name="picture link" placeholder="Ссылка на картинку"
+                       required type="text">
+              </label>
+              <button class="popup__save-button" type="submit">Создать</button>
+            </fieldset>
+          </form>
+          <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
         </div>
-      </li>
-    </template>
+      </div>
 
-    <script src="scripts/initial-cards.js"></script>
-    <script src="scripts/index.js"></script>
+      <!-- Opened-photo Popup -->
+      <div class="popup popup_type_open-photo">
+        <div class="popup__opened-photo-container">
+          <img alt="Фотография из галереи пользователя" class="popup__opened-image" src=""/>
+          <h2 class="popup__image-signature"></h2>
+          <button aria-label="закрыть форму" class="popup__close-icon popup__close-icon_close-photo"
+                  type="button"></button>
+        </div>
+      </div>
+
+      <!-- Card template -->
+      <template id="card-template">
+        <li class="gallery-item">
+          <img alt="" class="gallery-item__photo" src=""/>
+          <button aria-label="удалить карточку" class="gallery-item__delete-card" type="button"></button>
+          <div class="gallery-item__content-text">
+            <h2 class="gallery-item__signature"></h2>
+            <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+          </div>
+        </li>
+      </template>
+
+      <script src="scripts/initial-cards.js"></script>
+      <script src="scripts/index.js"></script>
   </body>
 
 </html>

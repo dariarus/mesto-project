@@ -10,7 +10,7 @@
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #FFFFFF;
+  color: #fff;
   border-radius: 2px;
   transition: opacity .2s ease-in;
 }
