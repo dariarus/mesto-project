@@ -12,10 +12,14 @@
   -moz-osx-font-smoothing: grayscale;
   color: #fff;
   border-radius: 2px;
-  transition: opacity .2s ease-in;
 }
 
-.popup__save-button:hover {
+.popup__save-button:not([disabled]) {
+  transition: opacity .2s ease-in;
+  cursor: pointer;
+}
+
+.popup__save-button:hover:not([disabled]) {
   opacity: 80%;
 }
 

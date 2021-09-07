@@ -54,16 +54,20 @@
       <!-- Edit Profile Popup-->
       <div class="popup popup_type_edit-profile">
         <div class="popup__container">
-          <form action="URL" name="profile edit form">
+          <form action="URL" class="popup__form" name="profile edit form">
             <h2 class="popup__form-name">Редактировать профиль</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input class="popup__item popup__item_type_username" name="username" placeholder="Имя" required
-                       type="text">
+                <input class="popup__item popup__item_type_username" name="username" placeholder="Имя" type="text"
+                       minlength="2" maxlength="40" id="input-username-element"
+                       required>
+                <span class="popup__input-error input-username-element-error"></span>
               </label>
               <label>
-                <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" required
-                       type="text">
+                <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" type="text"
+                       minlength="2" maxlength="200" id="input-userinfo-element"
+                       required>
+                <span class="popup__input-error input-userinfo-element-error"></span>
               </label>
               <button class="popup__save-button" type="submit">Сохранить</button>
             </fieldset>
@@ -75,16 +79,19 @@
       <!-- Add Cards Popup -->
       <div class="popup popup_type_add-card">
         <div class="popup__container">
-          <form action="URL" name="add card form">
+          <form action="URL" class="popup__form" name="add card form">
             <h2 class="popup__form-name">Новое место</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" required
-                       type="text">
+                <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" type="text"
+                       minlength="2" maxlength="30" id="input-place-element"
+                       required>
+                <span class="popup__input-error input-place-element-error"></span>
               </label>
               <label>
                 <input class="popup__item popup__item_type_link" name="picture link" placeholder="Ссылка на картинку"
-                       required type="text">
+                       type="url" id="input-link-element" required>
+                <span class="popup__input-error input-link-element-error"></span>
               </label>
               <button class="popup__save-button" type="submit">Создать</button>
             </fieldset>
@@ -114,9 +121,8 @@
           </div>
         </li>
       </template>
-
-      <script src="scripts/initial-cards.js"></script>
-      <script src="scripts/index.js"></script>
+    </div>
+    <script src="scripts/initial-cards.js"></script>
+    <script src="scripts/index.js"></script>
   </body>
-
 </html>

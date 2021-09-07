@@ -14,6 +14,12 @@ const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
 const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
 const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
 
+// Находим форму редактирования профиля в DOM
+const formProfileElement = popupEditProfile.querySelector('[name="profile edit form"]');
+// выбор текстовых полей формы редактирования профиля, где д/отображ-ся имя и статус со страницы
+const inputUsername = popupEditProfile.querySelector('.popup__item_type_username');
+const inputUserInfo = popupEditProfile.querySelector('.popup__item_type_user-info');
+
 // (6.) поиск контейнера для карточек в DOM
 const cardContainer = document.querySelector('.gallery');
 
@@ -35,9 +41,92 @@ window.onload = function () {
   });
 };
 
+
+/*- 2. Функции показа ошибки и снятия ошибки -*/
+const showInputError = (formElement, inputElement, errorMessage) => {
+  // Находим элемент ошибки внутри самой функции, т.е. находим span, в котором будет отображаться сообщение об ошибке
+  // исп-ся уникальный id инпута, чтобы находить любой спан в любой форме, где у инпута будет другой соотве-щий id
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('popup__item_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+};
+
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('popup__item_type_error');
+  errorElement.classList.remove('popup__input-error_active');
+  errorElement.textContent = '';
+};
+
+// функция очистки ошибок полей в попапе
+const hideInputErrorInPopup = (popup) => {
+  const formList = Array.from(popup.querySelectorAll('.popup__form'));
+  formList.forEach((formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll('.popup__item'));
+    inputList.forEach((inputElement) => {
+      // очищать ошибки только в том случае, если польз-ль это поле так и оставил незаполненным
+      if (inputElement.value === '') {
+        hideInputError(formElement, inputElement)
+      }
+    });
+  });
+}
+
+/*- 3. Функция, которая проверяет валидность поля -*/
+const isValid = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    // Если поле не проходит валидацию, покажем ошибку
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    // Если проходит, скроем
+    hideInputError(formElement, inputElement);
+  }
+};
+
+/*- 6. Блокировка кнопки отправки формы, если хоть одно поле невалидно -*/
+// ф-ция проверки валидности ВСЕХ полей - принимает массив полей, собранных в форме
+const hasInvalidInput = (inputList) => {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+    // Если поле не валидно, колбэк вернёт true. Обход массива прекратится, и вся фунцкция hasInvalidInput вернёт true
+    return !inputElement.validity.valid;
+  })
+};
+
+// функция изменения состояния кнопки с неактивного на активное
+const toggleButtonInPopup = (popup, button) => {
+  const formPopup = Array.from(popup.querySelectorAll('.popup__form'));
+  formPopup.forEach((elemForm) => {
+    const inputList = Array.from(elemForm.querySelectorAll('.popup__item'));
+    inputList.forEach((elemInput) => {
+      // проверять ошибки только в кейсах, произошедших после первичной загрузки страницы. 'load' - событие:
+      // страница полностью загружена со всем окружением
+      document.addEventListener('load', () => {
+        isValid(elemForm, elemInput);
+      });
+    });
+    if (!hasInvalidInput(inputList)) {
+      button.classList.remove('popup__save-button_disabled');
+      button.removeAttribute('disabled');
+    } else {
+      button.classList.add('popup__save-button_disabled');
+      button.setAttribute('disabled', 'disabled');
+    }
+  });
+}
+
 // функция откртытия попапа общая
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  const button = popup.querySelector('.popup__save-button');
+  toggleButtonInPopup(popup, button)
+}
+
+// функция закрытия попапа общая
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  hideInputErrorInPopup(popup);
 }
 
 // функция открытия попапа с изображением из карточки
@@ -61,11 +150,6 @@ buttonAddCard.addEventListener('click', () => {
   openPopup(popupAddCard);
 });
 
-// функция закрытия попапа общая
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-}
-
 // обработчик событий для кнопки закрытия попапа редактирования профиля
 buttonCloseEditProfile.addEventListener('click', () => {
   closePopup(popupEditProfile);
@@ -80,8 +164,8 @@ buttonCloseAddCard.addEventListener('click', () => {
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape') {
     document.querySelectorAll('.popup_opened').forEach(popupItem => {
-        closePopup(popupItem);
-      });
+      closePopup(popupItem);
+    });
   }
 });
 
@@ -103,10 +187,6 @@ function addListenerToCLosePopup() {
 const username = document.querySelector('.profile__username');
 const userInfo = document.querySelector('.profile__user-info');
 
-// выбор текстовых полей формы редактирования профиля, где д/отображ-ся имя и статус со страницы
-const inputUsername = popupEditProfile.querySelector('.popup__item_type_username');
-const inputUserInfo = popupEditProfile.querySelector('.popup__item_type_user-info');
-
 // обработчик событий для кнопки открытия попапа редактирования профиля
 // + извлечение контента со страницы и заполнение им полей формы данного попапа
 function openPopupEditProfile() {
@@ -119,9 +199,6 @@ buttonEditProfile.addEventListener('click', openPopupEditProfile);
 
 
 // 1.3 Редактирование имени и информации о себе
-
-// Находим форму в DOM
-const formProfileElement = popupEditProfile.querySelector('[name="profile edit form"]');
 
 // Функция обработчика «отправки» формы, хотя пока она никуда отправляться не будет
 function submitFormEditProfile(evt) {
@@ -222,3 +299,75 @@ function submitFormAddCard(evt) {
 
 // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
 formAddCardElement.addEventListener('submit', submitFormAddCard);
+
+/** Валидация полей **/
+/*- 1. Найти элементы -*/
+// форма найдена выше: formProfileElement
+// input формы наайден: inputUsername
+
+
+formProfileElement.addEventListener('submit', function (evt) {
+  // Отменим стандартное поведение по сабмиту
+  evt.preventDefault();
+});
+
+const toggleButtonState = (inputList, buttonElement) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.classList.add('popup__save-button_disabled');
+    buttonElement.setAttribute('disabled', 'disabled');
+    //buttonElement.setAttribute('disabled', true);
+  } else {
+    // иначе сделай кнопку активной
+    buttonElement.classList.remove('popup__save-button_disabled');
+    buttonElement.removeAttribute('disabled');
+  }
+  // далее вызывем ф-цию внутри обработчика события input (внутри ф-ции setEventListeners), т.к.
+  // нужно сверять состояние кнопки при каждом изменении полей формы
+};
+
+/*- 4. обработчики событий на все input в форме -*/
+// вместо одного обработчика на первый поп порядку инпут в DOM -
+// inputUsername.addEventListener('input', isValid); -
+// нужно сделать ф-цию setEventListener, которая примет параметром элемент формы и добавит её полям нужные обработчики:
+const setEventListeners = (formElement) => {
+  // Находим все поля внутри формы, сделаем из них массив методом Array.from
+  const inputList = Array.from(formElement.querySelectorAll('.popup__item'));
+  // (6.) Найдём в текущей форме кнопку отправки
+  const buttonElement = formElement.querySelector('.popup__save-button');
+  // (6.) Вызовем toggleButtonState, чтобы кнопка была неактивна при первой загрузке формы, до начала к-либо ввода данных
+  toggleButtonState(inputList, buttonElement);
+
+  // Обойдём все элементы полученной коллекции
+  inputList.forEach((inputElement) => {
+    // каждому полю добавим обработчик события input
+    inputElement.addEventListener('input', () => {
+      // Внутри колбэка вызовем isValid, передав ей форму и проверяемый элемент
+      isValid(formElement, inputElement)
+      // (6.)
+      toggleButtonState(inputList, buttonElement)
+    });
+  });
+};
+
+/*- 5. обработчики событий на все формы на странице -*/
+// найти и перебрать все формы на странице
+const enableValidation = () => {
+  // Найдём все формы с указанным классом в DOM,
+  // сделаем из них массив методом Array.from
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
+
+  // Переберём полученную коллекцию
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      // У каждой формы отменим стандартное поведение
+      evt.preventDefault();
+    });
+    // Для каждой формы вызовем функцию setEventListeners, передав ей элемент формы
+    setEventListeners(formElement);
+  });
+};
+
+// Вызовем функцию
+enableValidation();
