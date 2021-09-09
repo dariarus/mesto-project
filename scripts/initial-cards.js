@@ -25,3 +25,5 @@ const initialCards = [
     link: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/43/51/c6/shoana-church.jpg?w=1100&h=-1&s=1"
   }
 ];
+
+export {initialCards};
