@@ -1,10 +1,9 @@
-import {init as initModal} from './src/components/modal.js'
-import {init as initCards} from "./src/components/card.js";
-import {enableValidation} from "./src/components/validate.js";
+import '../pages/index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-/* 1. Работа модальных окон*/
+import {init as initModal} from './modal.js'
+import {init as initCards} from "./card.js";
+import {enableValidation} from "./validate.js";
 
-// добавление дефолтных карточек при загрузке страницы
 window.onload = function () {
   initModal();
   enableValidation({

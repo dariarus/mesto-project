@@ -5,7 +5,7 @@
   left: 430px;
   width: 40px;
   height: 40px;
-  background: url('../../../images/icons/close-icon.svg') center center;
+  background: url('/src/images/icons/close-icon.svg') center center;
   transition: opacity .2s ease-in;
 }
 

@@ -1,6 +1,6 @@
 import {openPopupImage} from "./modal.js";
 import {closePopup, popupAddCard} from "./modal.js";
-import {initialCards} from "../../initial-cards.js";
+import {initialCards} from "./initial-cards.js";
 
 // (6.) поиск контейнера для карточек в DOM
 export const cardContainer = document.querySelector('.gallery');
