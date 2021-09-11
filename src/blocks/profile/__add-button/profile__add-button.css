@@ -1,0 +1,29 @@
+.profile__add-button {
+  all: unset;
+  width: 150px;
+  height: 50px;
+  background: url('/src/images/icons/icon-cross.svg') center center no-repeat;
+  background-size: 22px 22px;
+  border: 2px solid rgba(255, 255, 255, 1);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity .2s ease-in;
+}
+
+.profile__add-button:hover {
+  opacity: 60%;
+}
+
+@media screen and (max-width: 756px) {
+  .profile__add-button {
+    margin-top: 34px;
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .profile__add-button {
+    margin-top: 36px;
+    width: 282px;
+  }
+}

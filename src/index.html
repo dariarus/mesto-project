@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Интерактивная страница о путешествиях" name="description">
+    <meta content="исследования, путешествия, профиль путешественника" name="keywords">
+    <meta content="Daria R" name="author">
+    <title>Mesto-Russia</title>
+    <link href="images/logo-black.svg" rel="shortcut icon">
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="content">
+        <!-- Header -->
+        <header class="header page__header-content">
+          <img alt="Логотип Mesto Russia" class="header__logo" src="<%=require('./images/header-logo.svg')%>">
+        </header>
+
+        <main>
+          <!-- Profile -->
+          <section class="profile page__content">
+            <div class="profile__info-wrap">
+              <img alt="фото профиля" class="profile__avatar" src="<%=require('./images/Cousteau-photo.jpg')%>">
+              <div class="profile__info">
+                <div class="profile__edit-profile-wrap">
+                  <h1 class="profile__username">Жак-Ив Кусто</h1>
+                  <button aria-label="кнопка редактирования профиля" class="profile__edit-button"
+                          data-popup-selector="#edit-profile-popup" type="button"></button>
+                </div>
+                <p class="profile__user-info">Исследователь океана</p>
+              </div>
+            </div>
+            <button aria-label="кнопка для добавления новых карточек на страницу" class="profile__add-button"
+                    data-popup-selector="#add-cards-popup" type="button"></button>
+          </section>
+
+          <!-- Photo Gallery -->
+          <section class="page__content">
+            <ul class="gallery"></ul>
+          </section>
+        </main>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer page__content">
+        <p class="footer__text">&copy; 2021 Mesto Russia</p>
+      </footer>
+
+      <!-- Edit Profile Popup-->
+      <div class="popup popup_type_edit-profile">
+        <div class="popup__container">
+          <form action="URL" class="popup__form" name="profile edit form">
+            <h2 class="popup__form-name">Редактировать профиль</h2>
+            <fieldset class="popup__fieldset">
+              <label>
+                <input class="popup__item popup__item_type_username" name="username" placeholder="Имя" type="text"
+                       minlength="2" maxlength="40" id="input-username-element"
+                       required>
+                <span class="popup__input-error input-username-element-error"></span>
+              </label>
+              <label>
+                <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" type="text"
+                       minlength="2" maxlength="200" id="input-userinfo-element"
+                       required>
+                <span class="popup__input-error input-userinfo-element-error"></span>
+              </label>
+              <button class="popup__save-button" type="submit">Сохранить</button>
+            </fieldset>
+          </form>
+          <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
+        </div>
+      </div>
+
+      <!-- Add Cards Popup -->
+      <div class="popup popup_type_add-card">
+        <div class="popup__container">
+          <form action="URL" class="popup__form" name="add card form">
+            <h2 class="popup__form-name">Новое место</h2>
+            <fieldset class="popup__fieldset">
+              <label>
+                <input class="popup__item popup__item_type_place" name="place name" placeholder="Название" type="text"
+                       minlength="2" maxlength="30" id="input-place-element"
+                       required>
+                <span class="popup__input-error input-place-element-error"></span>
+              </label>
+              <label>
+                <input class="popup__item popup__item_type_link" name="picture link" placeholder="Ссылка на картинку"
+                       type="url" id="input-link-element" required>
+                <span class="popup__input-error input-link-element-error"></span>
+              </label>
+              <button class="popup__save-button" type="submit">Создать</button>
+            </fieldset>
+          </form>
+          <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
+        </div>
+      </div>
+
+      <!-- Opened-photo Popup -->
+      <div class="popup popup_type_open-photo">
+        <div class="popup__opened-photo-container">
+          <img alt="Фотография из галереи пользователя" class="popup__opened-image" src="">
+          <h2 class="popup__image-signature"></h2>
+          <button aria-label="закрыть форму" class="popup__close-icon popup__close-icon_close-photo"
+                  type="button"></button>
+        </div>
+      </div>
+
+      <!-- Card template -->
+      <template id="card-template">
+        <li class="gallery-item">
+          <img alt="" class="gallery-item__photo" src="">
+          <button aria-label="удалить карточку" class="gallery-item__delete-card" type="button"></button>
+          <div class="gallery-item__content-text">
+            <h2 class="gallery-item__signature"></h2>
+            <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+          </div>
+        </li>
+      </template>
+    </div>
+  </body>
+</html>

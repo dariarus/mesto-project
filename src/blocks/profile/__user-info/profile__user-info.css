@@ -1,0 +1,33 @@
+.profile__user-info {
+  margin: 16px 0 0;
+  max-width: 565px;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFFFFF;
+  word-wrap: break-word;
+}
+
+@media screen and (max-width: 874px) {
+  .profile__user-info {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .profile__user-info {
+    max-width: 317px;
+  }
+}
+
+@media screen and (max-width: 464px) {
+  .profile__user-info {
+    max-width: 225px;
+    margin: 14px 0 0;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
