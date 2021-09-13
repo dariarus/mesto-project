@@ -1,8 +1,8 @@
 // функция изменения состояния кнопки (любой)
-export const toggleButtonState = (buttonElement, inactiveButtonClass, setActive) => {
-  // setActive - подставляется условие "активна ли кнопка ? true : false". Можно подставить в т.ч. "inputElement.validity.valid"
+export const toggleButtonState = (buttonElement, inactiveButtonClass, isActive) => {
+  // isActive - подставляется условие "активна ли кнопка ? true : false". Можно подставить в т.ч. "inputElement.validity.valid"
   // это buttonIsActive в validate.js
-  if (setActive) {
+  if (isActive) {
     // сделай кнопку активной
     buttonElement.classList.remove(inactiveButtonClass);
     buttonElement.removeAttribute('disabled');

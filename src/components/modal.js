@@ -26,7 +26,7 @@ const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-ico
 // выбор кнопок редактирования профиля и добавления карточки
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 
-export function init () {
+export function init() {
   addListenerToOverlay();
   // обработчик событий для кнопки закрытия попапа с фотографией
   buttonClosePhoto.addEventListener('click', () => {
@@ -45,7 +45,7 @@ export function init () {
 
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля
-function addEventListenerToButton(evt) {
+function handleESC(evt) {
   if (evt.key === 'Escape') {
     document.querySelectorAll('.popup_opened').forEach(popupItem => {
       closePopup(popupItem);
@@ -53,12 +53,12 @@ function addEventListenerToButton(evt) {
   }
 }
 
-document.addEventListener('keydown', addEventListenerToButton);
-
-// снятие обработчика с кнопки ESC
-export function removeEventListenerFromButton() {
-  removeEventListener('keydown', addEventListenerToButton);
-}
+// document.addEventListener('keydown', handleESC);
+//
+// // снятие обработчика с кнопки ESC
+// export function removeEventListenerFromButton() {
+//   document.removeEventListener('keydown', handleESC);
+// }
 
 // обработчик события клика мыши на оверлей для закрытия попапов
 function addListenerToOverlay() {
@@ -75,15 +75,15 @@ function addListenerToOverlay() {
 // функция откртытия попапа общая
 export function openPopup(popup) {
   popup.classList.add('popup_opened');
-  const button = popup.querySelector('.popup__save-button');
-  toggleButtonInPopup(popup, button, 'popup__save-button_disabled')
-  hideInputErrorInPopup(popup, 'popup__item_type_error', 'popup__input-error_active');
+  // добавление обработчика на документ при нажатии кнопки ESC
+  document.addEventListener('keydown', handleESC);
 }
 
 // функция закрытия попапа общая
 export function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  removeEventListenerFromButton();
+  // удаление обрабтчика с документа, когда не нужно отслеживать кнопку ESC, т.к. попап закрыт
+  document.removeEventListener('keydown', handleESC);
 }
 
 // функция открытия попапа с изображением из карточки
@@ -106,6 +106,11 @@ export function openPopupEditProfile() {
   inputUsername.value = username.textContent;
   inputUserInfo.value = userInfo.textContent;
   openPopup(popupEditProfile);
+  // проверка кнопки и валидности форм при открытии конкретного попапа, в котором точно есть форма.
+  // перенесено из общей ф-ции открытия попапа, т.к. не у всех попапов есть формы
+  const button = popupEditProfile.querySelector('.popup__save-button');
+  toggleButtonInPopup(popupEditProfile, button, 'popup__save-button_disabled')
+  hideInputErrorInPopup(popupEditProfile, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
 }
 
 // 1.3 Редактирование имени и информации о себе
@@ -127,6 +132,9 @@ export function submitFormEditProfile(evt) {
 // обработчик событий для кнопки открытия попапа добавления карточки
 buttonAddCard.addEventListener('click', () => {
   openPopup(popupAddCard);
+  const button = popupAddCard.querySelector('.popup__save-button');
+  toggleButtonInPopup(popupAddCard, button, '.popup__form', '.popup__item','popup__save-button_disabled')
+  hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
 });
 
 // обработчик событий для кнопки закрытия попапа редактирования профиля

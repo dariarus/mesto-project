@@ -1,6 +1,6 @@
 import {openPopupImage} from "./modal.js";
 import {closePopup, popupAddCard} from "./modal.js";
-import {initialCards} from "./initial-cards.js";
+import {initialCards} from "./variables.js";
 
 // (6.) поиск контейнера для карточек в DOM
 export const cardContainer = document.querySelector('.gallery');
@@ -88,7 +88,7 @@ export function submitFormAddCard(evt) {
   //      1 - массив карточек - либо статичный для отрисовки дефолтных, либо массив, создаваемый при передачи данных из фориы добавления карточки;
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   addCard(card, cardContainer);
-
+  formAddCardElement.reset();
   //
   // здесь же - вызов функции закрытия попапа с формой добавления карточки,
   //          т.к. после нажатия на submit он в любом случае д/закрываться

@@ -21,13 +21,14 @@ const hideInputError = (formElement, inputElement, {inputErrorClass, errorClass}
 };
 
 // функция очистки ошибок полей в попапе
-export const hideInputErrorInPopup = (popup, inputErrorClass, errorClass) => {
-  const formList = Array.from(popup.querySelectorAll('.popup__form'));
+export const hideInputErrorInPopup = (popup, formInPopup, inputPopup, inputErrorClass, errorClass) => {
+  const formList = Array.from(popup.querySelectorAll(formInPopup));
   formList.forEach((formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__item'));
+    const inputList = Array.from(formElement.querySelectorAll(inputPopup));
     inputList.forEach((inputElement) => {
       // очищать ошибки только в том случае, если польз-ль это поле так и оставил незаполненным
       if (inputElement.value === '' || (inputElement.value !== '' && inputElement.validity.valid)) {
+        console.log('jjjjjjjjjjjjjj')
         hideInputError(formElement, inputElement, {inputErrorClass, errorClass})
       }
     });
@@ -57,10 +58,10 @@ const hasInvalidInput = (inputList) => {
 };
 
 // функция изменения состояния кнопки с неактивного на активное общая
-export const toggleButtonInPopup = (popup, button, inactiveButtonClass) => {
-  const formPopup = Array.from(popup.querySelectorAll('.popup__form'));
+export const toggleButtonInPopup = (popup, button, formInPopup, inputPopup,inactiveButtonClass) => {
+  const formPopup = Array.from(popup.querySelectorAll(formInPopup));
   formPopup.forEach((elemForm) => {
-    const inputList = Array.from(elemForm.querySelectorAll('.popup__item'));
+    const inputList = Array.from(elemForm.querySelectorAll(inputPopup));
     inputList.forEach((elemInput) => {
       // проверять ошибки только в кейсах, произошедших после первичной загрузки страницы. 'load' - событие:
       // страница полностью загружена со всем окружением
