@@ -1,5 +1,7 @@
 import {toggleButtonInPopup, hideInputErrorInPopup} from "./validate.js";
 import {submitFormAddCard, formAddCardElement} from "./card.js";
+import {saveProfile} from "./api.js";
+import {getUser} from "./api";
 
 
 export const popupEditProfile = document.querySelector('.popup_type_edit-profile');
@@ -25,6 +27,8 @@ const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-ico
 /*1.1 Открытие и закрытие модального окна */
 // выбор кнопок редактирования профиля и добавления карточки
 const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonSaveProfile = popupEditProfile.querySelector('.popup__save-button');
+export const buttonSaveCard = popupAddCard.querySelector('.popup__save-button');
 
 export function init() {
   addListenerToOverlay();
@@ -35,14 +39,23 @@ export function init() {
   document.querySelector('.popup__opened-photo-container').addEventListener('click', (evt) => {
     evt.stopPropagation();
   });
+
   // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» + закрытие попапа (см. ф-цию выше)
   formProfileElement.addEventListener('submit', submitFormEditProfile);
   // 1.2 Поля формы. Отображение значений по умолчанию в полях формы редактирования профиля
 // обработчик событий для кнопки открытия попапа редактирования профиля
 // + извлечение контента со страницы и заполнение им полей формы данного попапа
   buttonEditProfile.addEventListener('click', openPopupEditProfile);
-}
 
+  getUser()
+    .then(user => {
+      username.textContent = user.name;
+      userInfo.textContent = user.about;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля
 function handleESC(evt) {
@@ -53,18 +66,11 @@ function handleESC(evt) {
   }
 }
 
-// document.addEventListener('keydown', handleESC);
-//
-// // снятие обработчика с кнопки ESC
-// export function removeEventListenerFromButton() {
-//   document.removeEventListener('keydown', handleESC);
-// }
-
 // обработчик события клика мыши на оверлей для закрытия попапов
 function addListenerToOverlay() {
   const popupList = document.querySelectorAll('.popup');
   popupList.forEach(popupListItem => {
-    popupListItem.addEventListener('click', (evt) => {
+    popupListItem.addEventListener('mousedown', (evt) => {
       closePopup(evt.target);
       // отмена всплытия события до .popup, чтобы можно было воспользоваться формой в .popup__container
       evt.stopPropagation();
@@ -108,8 +114,7 @@ export function openPopupEditProfile() {
   openPopup(popupEditProfile);
   // проверка кнопки и валидности форм при открытии конкретного попапа, в котором точно есть форма.
   // перенесено из общей ф-ции открытия попапа, т.к. не у всех попапов есть формы
-  const button = popupEditProfile.querySelector('.popup__save-button');
-  toggleButtonInPopup(popupEditProfile, button, 'popup__save-button_disabled')
+  toggleButtonInPopup(popupEditProfile, buttonSaveProfile, '.popup__form', '.popup__item','popup__save-button_disabled');
   hideInputErrorInPopup(popupEditProfile, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
 }
 
@@ -120,9 +125,19 @@ export function submitFormEditProfile(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
+  buttonSaveProfile.textContent = 'Сохранение...';
   // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
-  username.textContent = inputUsername.value;
-  userInfo.textContent = inputUserInfo.value;
+  saveProfile(inputUsername.value, inputUserInfo.value)
+    .then(result => {
+      username.textContent = result.name;
+      userInfo.textContent = result.about;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      buttonSaveProfile.textContent = 'Сохранить';
+    })
 
   // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
   closePopup(popupEditProfile);
@@ -132,8 +147,7 @@ export function submitFormEditProfile(evt) {
 // обработчик событий для кнопки открытия попапа добавления карточки
 buttonAddCard.addEventListener('click', () => {
   openPopup(popupAddCard);
-  const button = popupAddCard.querySelector('.popup__save-button');
-  toggleButtonInPopup(popupAddCard, button, '.popup__form', '.popup__item','popup__save-button_disabled')
+  toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item','popup__save-button_disabled')
   hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
 });
 
@@ -154,3 +168,8 @@ formAddCardElement.addEventListener('submit', submitFormAddCard);
 formProfileElement.addEventListener('submit', function (evt) {
   evt.preventDefault();
 });
+
+
+
+
+
