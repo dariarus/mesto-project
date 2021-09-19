@@ -161,7 +161,7 @@ export function submitFormAddCard(evt) {
           console.log(err);
         })
         .finally(() => {
-          buttonSaveCard.textContent = "Сохранить";
+          buttonSaveCard.textContent = "Создать";
         })
     })
 
