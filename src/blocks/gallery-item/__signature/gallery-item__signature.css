@@ -1,6 +1,7 @@
 .gallery-item__signature {
   flex: 1;
   margin: 0;
+  padding: 0 5px 0 0;
   font-family: 'Inter', 'Arial', sans-serif;
   font-weight: 900;
   font-size: 24px;

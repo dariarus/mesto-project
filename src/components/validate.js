@@ -28,7 +28,6 @@ export const hideInputErrorInPopup = (popup, formInPopup, inputPopup, inputError
     inputList.forEach((inputElement) => {
       // очищать ошибки только в том случае, если польз-ль это поле так и оставил незаполненным
       if (inputElement.value === '' || (inputElement.value !== '' && inputElement.validity.valid)) {
-        console.log('jjjjjjjjjjjjjj')
         hideInputError(formElement, inputElement, {inputErrorClass, errorClass})
       }
     });
@@ -58,7 +57,7 @@ const hasInvalidInput = (inputList) => {
 };
 
 // функция изменения состояния кнопки с неактивного на активное общая
-export const toggleButtonInPopup = (popup, button, formInPopup, inputPopup,inactiveButtonClass) => {
+export const toggleButtonInPopup = (popup, button, formInPopup, inputPopup, inactiveButtonClass) => {
   const formPopup = Array.from(popup.querySelectorAll(formInPopup));
   formPopup.forEach((elemForm) => {
     const inputList = Array.from(elemForm.querySelectorAll(inputPopup));

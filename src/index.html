@@ -9,7 +9,8 @@
     <meta content="исследования, путешествия, профиль путешественника" name="keywords">
     <meta content="Daria R" name="author">
     <title>Mesto-Russia</title>
-    <link href="<%=require('./images/logo-black.svg')%>" rel="shortcut icon"> <!-- запись пути до картинки - для webpack -->
+    <link href="<%=require('./images/logo-black.svg')%>" rel="shortcut icon">
+    <!-- запись пути до картинки - для webpack -->
   </head>
 
   <body>
@@ -24,14 +25,18 @@
           <!-- Profile -->
           <section class="profile page__content">
             <div class="profile__info-wrap">
-              <img alt="фото профиля" class="profile__avatar" src="<%=require('./images/Cousteau-photo.jpg')%>">
+              <div class="profile__button-wrap">
+                <img alt="фото профиля" class="profile__avatar" src="">
+                <button aria-label="кнопка редактирования аватара" class="profile__edit-avatar-button"
+                        data-popup-selector="#edit-avatar-popup" type="button"></button>
+              </div>
               <div class="profile__info">
                 <div class="profile__edit-profile-wrap">
-                  <h1 class="profile__username">Жак-Ив Кусто</h1>
+                  <h1 class="profile__username"></h1>
                   <button aria-label="кнопка редактирования профиля" class="profile__edit-button"
                           data-popup-selector="#edit-profile-popup" type="button"></button>
                 </div>
-                <p class="profile__user-info">Исследователь океана</p>
+                <p class="profile__user-info"></p>
               </div>
             </div>
             <button aria-label="кнопка для добавления новых карточек на страницу" class="profile__add-button"
@@ -109,14 +114,34 @@
         </div>
       </div>
 
+      <!-- Update Profile Photo Popup -->
+      <div class="popup popup_type_update-avatar">
+        <div class="popup__container">
+          <form action="URL" class="popup__form" name="update avatar form">
+            <h2 class="popup__form-name">Обновить аватар</h2>
+            <fieldset class="popup__fieldset">
+              <label>
+                <input class="popup__item popup__item_type_link" name="avatar link" placeholder="Ссылка на картинку"
+                       type="url" id="input-avatar-link-element" required>
+                <span class="popup__input-error input-avatar-link-element-error"></span>
+              </label>
+              <button class="popup__save-button" type="submit">Сохранить</button>
+            </fieldset>
+          </form>
+          <button aria-label="закрыть форму" class="popup__close-icon" type="button"></button>
+        </div>
+      </div>
+
       <!-- Card template -->
       <template id="card-template">
         <li class="gallery-item">
           <img alt="" class="gallery-item__photo" src="">
-          <button aria-label="удалить карточку" class="gallery-item__delete-card" type="button"></button>
           <div class="gallery-item__content-text">
             <h2 class="gallery-item__signature"></h2>
-            <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+            <div class="gallery-item__like-area">
+              <button aria-label="поставить лайк карточке" class="gallery-item__like" type="button"></button>
+              <p class="gallery-item__like-count">0</p>
+            </div>
           </div>
         </li>
       </template>

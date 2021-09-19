@@ -6,6 +6,7 @@ module.exports
   const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // подключите к проекту mini-css-extract-plugin
 
   module.exports = {
+    target: 'web',
     entry: { main: './src/components/index.js' },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -15,9 +16,12 @@ module.exports
     mode: 'development', // добавили режим разработчика
     devServer: {
       static: path.resolve(__dirname, './dist'), // путь, куда "смотрит" режим разработчика
+      watchFiles: ['src/**/*'],
       compress: true, // это ускорит загрузку в режиме разработки
       port: 8080, // порт, чтобы открывать сайт по адресу localhost:8080, но можно поменять порт
       open: true, // сайт будет открываться сам при запуске npm run dev
+      liveReload: true
+
       //devtool: 'source-map'
     },
     module: {
@@ -64,7 +68,7 @@ module.exports
         template: './src/index.html' // путь к файлу index.html
       }),
       new CleanWebpackPlugin(), // использовали плагин
-      new MiniCssExtractPlugin() // подключение плагина для объединения файлов
+      new MiniCssExtractPlugin()// подключение плагина для объединения файлов
     ]
   };
 }
