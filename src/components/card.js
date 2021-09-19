@@ -150,6 +150,7 @@ export function submitFormAddCard(evt) {
   //      1 - массив карточек - либо статичный для отрисовки дефолтных, либо массив, создаваемый при передачи данных из фориы добавления карточки;
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   // addCard(card, cardContainer);
+
   buttonSaveCard.textContent = "Сохранение...";
   createNewCard(placeName.value, placePic.value)
     .then(card => {
