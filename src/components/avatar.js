@@ -56,6 +56,7 @@ const updateAvatarOnServer = (url) => {
   updateAvatarUrl(url)
     .then(user => {
       updateAvatarOnPage(user.avatar);
+      closePopup(popupEditAvatar);
     })
     .catch((err) => {
       console.log(err);
@@ -69,7 +70,6 @@ const submitEditAvatar = (evt) => {
   //отмена стандартной отправки формы
   evt.preventDefault();
   updateAvatarOnServer(inputAvatarUrl.value);
-  closePopup(popupEditAvatar);
   formAvatarElement.reset();
 }
 

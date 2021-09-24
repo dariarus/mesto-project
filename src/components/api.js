@@ -6,29 +6,26 @@ const config = {
   }
 }
 
+function _getResponseData(res) {
+  if (!res.ok) {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+  return res.json();
+}
+
 // GET - запрос по умолчанию (указывать не нужно), не имеет тела
 export function getCards() {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(res => _getResponseData(res));
 }
 
 export function getUser() {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(res => _getResponseData(res));
 }
 
 export function saveProfile(newName, newAbout) {
@@ -40,12 +37,7 @@ export function saveProfile(newName, newAbout) {
       about: newAbout
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(res => _getResponseData(res));
 }
 
 export function createNewCard(newName, newLink) {
@@ -57,12 +49,7 @@ export function createNewCard(newName, newLink) {
       link: newLink
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(res => _getResponseData(res));
 }
 
 export function deleteCard(id) {
@@ -77,7 +64,7 @@ export function putLike(id) {
     method: 'PUT',
     headers: config.headers
   })
-    .then(res => res.json())
+    .then(res => _getResponseData(res));
 }
 
 export function deleteLike(id) {
@@ -85,7 +72,7 @@ export function deleteLike(id) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => res.json())
+    .then(res => _getResponseData(res));
 }
 
 export function updateAvatarUrl(url) {
@@ -96,6 +83,6 @@ export function updateAvatarUrl(url) {
       avatar: url
     })
   })
-    .then(res => res.json());
+    .then(res => _getResponseData(res));
 }
 
