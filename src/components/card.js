@@ -1,52 +1,76 @@
-import {openPopupImage, closePopup, popupAddCard} from "./modal.js";
-import {getCards, createNewCard, getUser, deleteCard, putLike, deleteLike} from "./api.js";
-import {buttonSaveCard} from "./modal.js";
+import {closePopup, openPopup} from "./modal.js";
+import {getCards, createNewCard, deleteCard, putLike, deleteLike} from "./api.js";
+import {userInfo} from "../pages/index.js";
+import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
 
+// выбор попапа фото и кнопки закрытия внутри него
+const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
+const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
+// выбор попапов и кнопок закрытия внутри них
+const popupAddCard = document.querySelector('.popup_type_add-card');
+const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
+
+const buttonAddCard = document.querySelector('.profile__add-button');
+/*1.1 Открытие и закрытие модального окна */
+const buttonSaveCard = popupAddCard.querySelector('.popup__save-button');
 // (6.) поиск контейнера для карточек в DOM
-export const cardContainer = document.querySelector('.gallery');
+const cardContainer = document.querySelector('.gallery');
 // (6.) поиск формы создания новой карточки в DOM
-export const formAddCardElement = document.querySelector('[name="add card form"]');
+const formAddCardElement = document.querySelector('[name="add card form"]');
 
 export function init() {
-  getUser()
-    .then(user => {
-      getCards()
-        .then((cardList) => {
-          cardList.forEach((card) => {
-            addCard(card, cardContainer, user);
-          })
-        })
-      .catch((err) => {
-        console.log(err);
+    getCards()
+    .then((cardList) => {
+      cardList.reverse();
+      cardList.forEach((card) => {
+        addCard(card, cardContainer, userInfo);
       })
     })
     .catch((err) => {
       console.log(err);
     })
-  // initialCards.forEach(item => {
-  //   addCard(item, cardContainer);
-  // });
+// initialCards.forEach(item => {
+//   addCard(item, cardContainer);
+// });
+  // обработчик событий для кнопки закрытия попапа с фотографией
+  buttonClosePhoto.addEventListener('click', () => {
+    closePopup(popupOpenPhoto);
+  });
+  // обработчик событий для кнопки открытия попапа добавления карточки
+  buttonAddCard.addEventListener('click', () => {
+    openPopup(popupAddCard);
+    toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item','popup__save-button_disabled')
+    hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
+  });
+// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
+  formAddCardElement.addEventListener('submit', submitFormAddCard);
+  // обработчик событий для кнопки закрытия попапа добавления карточки
+  buttonCloseAddCard.addEventListener('click', () => {
+    closePopup(popupAddCard);
+  });
 }
 
-// 4. Добавление полноценной карточки через форму / при загрузке страницы
+// функция открытия попапа с изображением из карточки
+function openPopupImage(card) {
+  // выбор попапа
+  const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
+  // открытие попапа
+  openPopup(popupOpenPhoto);
+  // выбор контейнера попапа
+  const image = popupOpenPhoto.querySelector('.popup__opened-image');
+  // заполнение контейнера нужным содержимым (изображение + подпись) в зависимости от кликнутой картинки
+  image.src = card.link;
+  image.alt = card.name;
+  const signature = popupOpenPhoto.querySelector('.popup__image-signature');
+  signature.textContent = card.name;
+}
 
-// 4.1 Создание карточки
-function createCard(card, user) {
-  // найти template в DOM
-  const cardTemplate = document.querySelector('#card-template').content;
-  // поиск узла (ноды) "элемент 'карточка'" для клонирования всего содежиомого
-  const cardElement = cardTemplate.querySelector('.gallery-item').cloneNode(true);
-  const likesCount = cardElement.querySelector('.gallery-item__like-count');
-  // найти поля, куда надо добавить содержимое из массива
-  cardElement.querySelector('.gallery-item__signature').textContent = card.name;
-  cardElement.querySelector('.gallery-item__photo').src = card.link;
-  cardElement.querySelector('.gallery-item__photo').alt = card.name;
-  likesCount.textContent = card.likes.length;
-
+const addLikeElementToCard = (cardElement, card, user) => {
   // 5. Лайк карточки
-
   // выбор кнопок лайка на странице
+  const likesCount = cardElement.querySelector('.gallery-item__like-count');
   const cardLike = cardElement.querySelector('.gallery-item__like');
+  likesCount.textContent = card.likes.length;
   if (card.likes && card.likes.some(like => like._id === user._id)) {
     cardLike.classList.add('gallery-item__like_active');
   }
@@ -81,11 +105,9 @@ function createCard(card, user) {
         });
     }
   });
+}
 
-// 6. Удаление карточки
-// выбор кнопок удаления карточек
-
-// слушатель на кнопку удаления, по которой кликнул полз-ль
+const addDeleteElementToCard = (cardElement, card, user) => {
   // если юзер (отправляющий запрос со своим токеном) - это тот, кто создал карточку, создать на этой карточке корзину
   if (user._id === card.owner._id) {
     const basket = document.createElement('button')
@@ -110,6 +132,28 @@ function createCard(card, user) {
         })
     })
   }
+}
+
+// 4. Добавление полноценной карточки через форму / при загрузке страницы
+// 4.1 Создание карточки
+function createCard(card, user) {
+  // найти template в DOM
+  const cardTemplate = document.querySelector('#card-template').content;
+  // поиск узла (ноды) "элемент 'карточка'" для клонирования всего содежиомого
+  const cardElement = cardTemplate.querySelector('.gallery-item').cloneNode(true);
+
+  // найти поля, куда надо добавить содержимое из массива
+  cardElement.querySelector('.gallery-item__signature').textContent = card.name;
+  cardElement.querySelector('.gallery-item__photo').src = card.link;
+  cardElement.querySelector('.gallery-item__photo').alt = card.name;
+
+  addLikeElementToCard(cardElement, card, user);
+
+// 6. Удаление карточки
+// выбор кнопок удаления карточек
+
+// слушатель на кнопку удаления, по которой кликнул полз-ль
+  addDeleteElementToCard(cardElement, card, user);
 
 // 7. Открытие и закрытие фото по клику
 // выбор кнопки-картинки, которая откроет саму картинку в попапе
@@ -117,7 +161,8 @@ function createCard(card, user) {
 
 
 // обработчик событий для кнопки открытия попапа с фотографией с вызовом функции добавления в попап нужной информации из карточек
-  buttonOpenPhoto.addEventListener('click', () => {
+  buttonOpenPhoto.addEventListener('click', (evt) => {
+    evt.stopPropagation();
     openPopupImage(card);
   });
 
@@ -126,13 +171,13 @@ function createCard(card, user) {
 }
 
 // функция для добавления карточки в DOM
-export function addCard(card, cardContainer, user) {
+function addCard(card, cardContainer, user) {
   const cardElement = createCard(card, user);
   cardContainer.prepend(cardElement);
 }
 
 // обработчик события submit для формы добавления новой карточки
-export function submitFormAddCard(evt) {
+function submitFormAddCard(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
@@ -154,21 +199,18 @@ export function submitFormAddCard(evt) {
   buttonSaveCard.textContent = "Сохранение...";
   createNewCard(placeName.value, placePic.value)
     .then(card => {
-      getUser()
-        .then(user => {
-          addCard(card, cardContainer, user);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          buttonSaveCard.textContent = "Создать";
-        })
+      addCard(card, cardContainer, userInfo);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      buttonSaveCard.textContent = "Создать";
     })
 
-  formAddCardElement.reset();
-  //
-  // здесь же - вызов функции закрытия попапа с формой добавления карточки,
-  //          т.к. после нажатия на submit он в любом случае д/закрываться
-  closePopup(popupAddCard);
+formAddCardElement.reset();
+//
+// здесь же - вызов функции закрытия попапа с формой добавления карточки,
+//          т.к. после нажатия на submit он в любом случае д/закрываться
+closePopup(popupAddCard);
 }
