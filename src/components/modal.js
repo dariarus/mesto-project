@@ -1,6 +1,5 @@
 export function init() {
   addListenerToOverlay();
-  handleESC();
 }
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля
@@ -37,7 +36,5 @@ export function closePopup(popup) {
   // удаление обрабтчика с документа, когда не нужно отслеживать кнопку ESC, т.к. попап закрыт
   document.removeEventListener('keydown', handleESC);
 }
-
-
 
 

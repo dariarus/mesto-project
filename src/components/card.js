@@ -200,6 +200,10 @@ function submitFormAddCard(evt) {
   createNewCard(placeName.value, placePic.value)
     .then(card => {
       addCard(card, cardContainer, userInfo);
+      formAddCardElement.reset();
+// здесь же - вызов функции закрытия попапа с формой добавления карточки,
+// т.к. после нажатия на submit он в любом случае д/закрываться
+      closePopup(popupAddCard);
     })
     .catch((err) => {
       console.log(err);
@@ -207,10 +211,4 @@ function submitFormAddCard(evt) {
     .finally(() => {
       buttonSaveCard.textContent = "Создать";
     })
-
-formAddCardElement.reset();
-//
-// здесь же - вызов функции закрытия попапа с формой добавления карточки,
-//          т.к. после нажатия на submit он в любом случае д/закрываться
-closePopup(popupAddCard);
 }
