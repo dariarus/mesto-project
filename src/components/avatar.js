@@ -19,14 +19,8 @@ const inputAvatarUrl = popupEditAvatar.querySelector('.popup__item_type_link');
 
 const buttonSubmitEditAvatar = popupEditAvatar.querySelector('.popup__save-button');
 
-export function init() {
-  getUser()
-    .then(user => {
-      updateAvatarOnPage(user.avatar);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+export function init(user) {
+  updateAvatarOnPage(user.avatar);
 }
 
 imageAvatar.addEventListener('mouseenter', () => {

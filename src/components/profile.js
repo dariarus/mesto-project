@@ -1,8 +1,6 @@
 import {saveProfile} from "./api.js";
-import {closePopup} from "./modal.js";
-import {userInfo} from "../pages/index.js";
+import {openPopup, closePopup} from "./modal.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate.js";
-import {openPopup} from "./modal.js";
 
 const popupEditProfile = document.querySelector('.popup_type_edit-profile');
 // выбор имени пользователя и статуса на странице
@@ -18,10 +16,10 @@ const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonSaveProfile = popupEditProfile.querySelector('.popup__save-button');
 const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-icon');
 
-export function init() {
+export function init(user) {
 // 1.2 Поля формы. Отображение значений по умолчанию в полях формы редактирования профиля
-  username.textContent = userInfo.name;
-  userInfoElement.textContent = userInfo.about;
+  username.textContent = user.name;
+  userInfoElement.textContent = user.about;
   // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» + закрытие попапа (см. ф-цию выше)
   formProfileElement.addEventListener('submit', submitFormEditProfile);
 // // Отменим стандартное поведение по сабмиту для всех форм попапа
@@ -56,7 +54,9 @@ function submitFormEditProfile(evt) {
   saveProfile(inputUsername.value, inputUserInfo.value)
     .then(result => {
       username.textContent = result.name;
-      userInfo.textContent = result.about;
+      userInfoElement.textContent = result.about;
+      // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
+      closePopup(popupEditProfile);
     })
     .catch((err) => {
       console.log(err);
@@ -64,9 +64,6 @@ function submitFormEditProfile(evt) {
     .finally(() => {
       buttonSaveProfile.textContent = 'Сохранить';
     })
-
-  // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
-  closePopup(popupEditProfile);
 }
 
 // обработчик событий для кнопки закрытия попапа редактирования профиля
