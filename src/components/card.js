@@ -3,6 +3,41 @@ import {getCards, createNewCard, deleteCard, putLike, deleteLike} from "./api.js
 import {userInfo} from "../pages/index.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
 
+
+/*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
+class Card {
+  constructor(data, cardSelector) {
+    // this._data = data;
+    this._link = data.link;
+    this._name = data.name;
+    //this._handleCardClick = handleCardClick;
+    this._cardSelector = cardSelector;
+  }
+
+  _getElement() {
+    return document
+      .querySelector(this._cardSelector)
+      .content
+      .querySelector('.gallery-item')
+      .cloneNode(true);
+  }
+
+  _addCardInfo() {
+    const cardElement = this._getElement();
+    // найти поля, куда надо добавить содержимое из массива
+    cardElement.querySelector('.gallery-item__signature').textContent = this._name;
+    cardElement.querySelector('.gallery-item__photo').src = this._link;
+    cardElement.querySelector('.gallery-item__photo').alt = this._name;
+    return cardElement;
+  }
+
+  consoleLog() {
+    return console.log(this._addCardInfo())
+  }
+}
+
+
+
 // выбор попапа фото и кнопки закрытия внутри него
 const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
 const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-photo');
@@ -172,7 +207,8 @@ function createCard(card, user) {
 
 // функция для добавления карточки в DOM
 function addCard(card, cardContainer, user) {
-  const cardElement = createCard(card, user);
+  const cardElement = new Card(card, '#card-template');
+  cardElement.consoleLog();
   cardContainer.prepend(cardElement);
 }
 
