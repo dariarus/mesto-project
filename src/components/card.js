@@ -10,6 +10,7 @@ class Card {
     // this._data = data;
     this._link = data.link;
     this._name = data.name;
+    this._likes = data.likes;
     //this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
   }
@@ -27,6 +28,24 @@ class Card {
     this._cardElement.querySelector('.gallery-item__signature').textContent = this._name;
     this._cardElement.querySelector('.gallery-item__photo').src = this._link;
     this._cardElement.querySelector('.gallery-item__photo').alt = this._name;
+    const likesCount = this._cardElement.querySelector('.gallery-item__like-count');
+    likesCount.textContent = this._likes.length;
+  }
+
+  setLikeColor() {
+    const cardLike = this._cardElement.querySelector('.gallery-item__like');
+    cardLike.classList.add('gallery-item__like_active');
+
+  }
+
+  setDeleteElement() {
+    const basket = document.createElement('button')
+    basket.classList.add('gallery-item__delete-card');
+    basket.setAttribute('aria-label', 'удалить карточку');
+    basket.setAttribute('type', 'button');
+
+    const referenceElement = this._cardElement.querySelector('.gallery-item__content-text');
+    referenceElement.before(basket);
 
   }
 
@@ -37,7 +56,6 @@ class Card {
     return this._cardElement;
   }
 }
-
 
 
 // выбор попапа фото и кнопки закрытия внутри него
@@ -55,20 +73,26 @@ const cardContainer = document.querySelector('.gallery');
 // (6.) поиск формы создания новой карточки в DOM
 const formAddCardElement = document.querySelector('[name="add card form"]');
 
-export function init() {
-    getCards()
+export function init(user) {
+  getCards()
     .then((cardList) => {
       cardList.reverse();
-        const defaultCardList = new Section( {
-          data: cardList,
-          renderer: (item) => {
-            const card = new Card(item, '#card-template');
-            const cardItem = card.createCard();
-            defaultCardList.setItem(cardItem);
+      const defaultCardList = new Section({
+        data: cardList,
+        renderer: (item) => {
+          const card = new Card(item, '#card-template');
+          const cardItem = card.createCard();
+          if (item.likes && item.likes.some(like => like._id === user._id)) {
+            card.setLikeColor();
           }
-        }, cardContainer);
-        defaultCardList.renderItems();
-      })
+          if (user._id === item.owner._id) {
+            card.setDeleteElement();
+          }
+          defaultCardList.setItem(cardItem);
+        }
+      }, cardContainer);
+      defaultCardList.renderItems();
+    })
     .catch((err) => {
       console.log(err);
     })
@@ -82,7 +106,7 @@ export function init() {
   // обработчик событий для кнопки открытия попапа добавления карточки
   buttonAddCard.addEventListener('click', () => {
     openPopup(popupAddCard);
-    toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item','popup__save-button_disabled')
+    toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
     hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
   });
 // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
@@ -108,74 +132,77 @@ function openPopupImage(card) {
   signature.textContent = card.name;
 }
 
-const addLikeElementToCard = (cardElement, card, user) => {
-  // 5. Лайк карточки
-  // выбор кнопок лайка на странице
-  const likesCount = cardElement.querySelector('.gallery-item__like-count');
-  const cardLike = cardElement.querySelector('.gallery-item__like');
-  likesCount.textContent = card.likes.length;
-  if (card.likes && card.likes.some(like => like._id === user._id)) {
-    cardLike.classList.add('gallery-item__like_active');
-  }
-  // слушатель с функцией event для выбора конкретного лайка, по которому кликнул пользователь
-  cardLike.addEventListener('click', function (evt) {
-    // есть ли среди аккаунтов лайкнувших людей мой аккаунт? Если да, то надо его удалить
-    if (card.likes && card.likes.some(like => like._id === user._id)) {
-      deleteLike(card._id)
-        .then(likedCard => {
-          card.likes = likedCard.likes;
-          // выбор кликнутого лайка через event target
-          const targetLike = evt.target;
-          // изменение класса для кикнутого лайка (установленного и снятого)
-          targetLike.classList.remove('gallery-item__like_active');
-          likesCount.textContent = likedCard.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      putLike(card._id)
-        .then(likedCard => {
-          card.likes = likedCard.likes;
-          // выбор кликнутого лайка через event target
-          const targetLike = evt.target;
-          // изменение класса для кикнутого лайка (установленного и снятого)
-          targetLike.classList.add('gallery-item__like_active');
-          likesCount.textContent = likedCard.likes.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  });
-}
+//const addLikeElementToCard = (cardElement, card, user) => {
+// 5. Лайк карточки
+// выбор кнопок лайка на странице
+// const likesCount = cardElement.querySelector('.gallery-item__like-count');
+// const cardLike = cardElement.querySelector('.gallery-item__like');
+// likesCount.textContent = card.likes.length;
+// if (card.likes && card.likes.some(like => like._id === user._id)) {
+//   // cardLike.classList.add('gallery-item__like_active');
+//   card. setLikeColor();
 
-const addDeleteElementToCard = (cardElement, card, user) => {
-  // если юзер (отправляющий запрос со своим токеном) - это тот, кто создал карточку, создать на этой карточке корзину
-  if (user._id === card.owner._id) {
-    const basket = document.createElement('button')
-    basket.classList.add('gallery-item__delete-card');
-    basket.setAttribute('aria-label', 'удалить карточку');
-    basket.setAttribute('type', 'button');
+//}
+// слушатель с функцией event для выбора конкретного лайка, по которому кликнул пользователь
+// cardLike.addEventListener('click', function (evt) {
+//   // есть ли среди аккаунтов лайкнувших людей мой аккаунт? Если да, то надо его удалить
+//   if (card.likes && card.likes.some(like => like._id === user._id)) {
+//     deleteLike(card._id)
+//       .then(likedCard => {
+//         card.likes = likedCard.likes;
+//         // выбор кликнутого лайка через event target
+//         const targetLike = evt.target;
+//         // изменение класса для кикнутого лайка (установленного и снятого)
+//         targetLike.classList.remove('gallery-item__like_active');
+//         likesCount.textContent = likedCard.likes.length;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   } else {
+//     putLike(card._id)
+//       .then(likedCard => {
+//         card.likes = likedCard.likes;
+//         // выбор кликнутого лайка через event target
+//         const targetLike = evt.target;
+//         // изменение класса для кикнутого лайка (установленного и снятого)
+//         targetLike.classList.add('gallery-item__like_active');
+//         likesCount.textContent = likedCard.likes.length;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   }
+// });
+// }
 
-    const referenceElement = cardElement.querySelector('.gallery-item__content-text');
-    referenceElement.before(basket);
-
-    basket.addEventListener('click', function () {
-      deleteCard(card._id)
-        // result для запроса DELETE - это либо undefind, либо 200 OK
-        .then(result => {
-          // кнопка кликнута - выбор ближайшего родителя кликнутой кнопки
-          const targetToDelete = basket.closest('.gallery-item');
-          // удаление карточки (ближайшего родителя кликнутой кнопки), по иконке удаления которой кликнул пользователь
-          targetToDelete.remove();
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    })
-  }
-}
+//  const addDeleteElementToCard = (cardElement, card, user) => {
+// //   // если юзер (отправляющий запрос со своим токеном) - это тот, кто создал карточку, создать на этой карточке корзину
+// //   if (user._id === card.owner._id) {
+// //     // const basket = document.createElement('button')
+// //     // basket.classList.add('gallery-item__delete-card');
+// //     // basket.setAttribute('aria-label', 'удалить карточку');
+// //     // basket.setAttribute('type', 'button');
+// //     //
+// //     // const referenceElement = cardElement.querySelector('.gallery-item__content-text');
+// //     // referenceElement.before(basket);
+// //
+//
+//     basket.addEventListener('click', function () {
+//       deleteCard(card._id)
+//         // result для запроса DELETE - это либо undefind, либо 200 OK
+//         .then(result => {
+//           // кнопка кликнута - выбор ближайшего родителя кликнутой кнопки
+//           const targetToDelete = basket.closest('.gallery-item');
+//           // удаление карточки (ближайшего родителя кликнутой кнопки), по иконке удаления которой кликнул пользователь
+//           targetToDelete.remove();
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         })
+//     })
+//  // }
+// }
 
 // 4. Добавление полноценной карточки через форму / при загрузке страницы
 // 4.1 Создание карточки
@@ -212,7 +239,6 @@ function createCard(card, user) {
 // вернуть готовую карточку со всеми внутренними примочками (лайк, удаление, открытие фото)
   return cardElement;
 }
-
 
 
 // обработчик события submit для формы добавления новой карточки

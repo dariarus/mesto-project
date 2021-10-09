@@ -18,7 +18,7 @@ window.onload = function () {
     .then(() => {
       initProfile(userInfo);
       initAvatar(userInfo);
-      initCards();
+      initCards(userInfo);
       initModal();
       enableValidation(validationConfig);
     });
