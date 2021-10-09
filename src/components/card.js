@@ -2,7 +2,7 @@ import {closePopup, openPopup} from "./modal.js";
 import {getCards, createNewCard, deleteCard, putLike, deleteLike} from "./api.js";
 import {userInfo} from "../pages/index.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
-
+import Section from "./Section";
 
 /*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
 class Card {
@@ -23,16 +23,18 @@ class Card {
   }
 
   _addCardInfo() {
-    const cardElement = this._getElement();
     // найти поля, куда надо добавить содержимое из массива
-    cardElement.querySelector('.gallery-item__signature').textContent = this._name;
-    cardElement.querySelector('.gallery-item__photo').src = this._link;
-    cardElement.querySelector('.gallery-item__photo').alt = this._name;
-    return cardElement;
+    this._cardElement.querySelector('.gallery-item__signature').textContent = this._name;
+    this._cardElement.querySelector('.gallery-item__photo').src = this._link;
+    this._cardElement.querySelector('.gallery-item__photo').alt = this._name;
+
   }
 
-  consoleLog() {
-    return console.log(this._addCardInfo())
+  createCard() {
+    this._cardElement = this._getElement();
+    this._addCardInfo();
+
+    return this._cardElement;
   }
 }
 
@@ -57,10 +59,16 @@ export function init() {
     getCards()
     .then((cardList) => {
       cardList.reverse();
-      cardList.forEach((card) => {
-        addCard(card, cardContainer, userInfo);
+        const defaultCardList = new Section( {
+          data: cardList,
+          renderer: (item) => {
+            const card = new Card(item, '#card-template');
+            const cardItem = card.createCard();
+            defaultCardList.setItem(cardItem);
+          }
+        }, cardContainer);
+        defaultCardList.renderItems();
       })
-    })
     .catch((err) => {
       console.log(err);
     })
@@ -205,12 +213,7 @@ function createCard(card, user) {
   return cardElement;
 }
 
-// функция для добавления карточки в DOM
-function addCard(card, cardContainer, user) {
-  const cardElement = new Card(card, '#card-template');
-  cardElement.consoleLog();
-  cardContainer.prepend(cardElement);
-}
+
 
 // обработчик события submit для формы добавления новой карточки
 function submitFormAddCard(evt) {
