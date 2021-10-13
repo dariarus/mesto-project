@@ -2,7 +2,8 @@ import {closePopup, openPopup} from "./modal.js";
 import {getCards, createNewCard, deleteCard, putLike, deleteLike} from "./api.js";
 import {userInfo} from "../pages/index.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
-import Section from "./Section";
+import Section from "./Section.js";
+import {Popup} from "./modal.js";
 
 /*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
 class Card {
@@ -100,25 +101,27 @@ export function init(user) {
 //   addCard(item, cardContainer);
 // });
   // обработчик событий для кнопки закрытия попапа с фотографией
-  buttonClosePhoto.addEventListener('click', () => {
+/*  buttonClosePhoto.addEventListener('click', () => {
     closePopup(popupOpenPhoto);
-  });
+  });*/
   // обработчик событий для кнопки открытия попапа добавления карточки
   buttonAddCard.addEventListener('click', () => {
-    openPopup(popupAddCard);
+    const popup = new Popup(popupAddCard);
+    popup.open();
+    //openPopup(popupAddCard);
     toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
     hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
   });
 // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
-  formAddCardElement.addEventListener('submit', submitFormAddCard);
+  //formAddCardElement.addEventListener('submit', submitFormAddCard);
   // обработчик событий для кнопки закрытия попапа добавления карточки
-  buttonCloseAddCard.addEventListener('click', () => {
+ /* buttonCloseAddCard.addEventListener('click', () => {
     closePopup(popupAddCard);
-  });
+  });*/
 }
 
 // функция открытия попапа с изображением из карточки
-function openPopupImage(card) {
+/*function openPopupImage(card) {
   // выбор попапа
   const popupOpenPhoto = document.querySelector('.popup_type_open-photo');
   // открытие попапа
@@ -130,7 +133,7 @@ function openPopupImage(card) {
   image.alt = card.name;
   const signature = popupOpenPhoto.querySelector('.popup__image-signature');
   signature.textContent = card.name;
-}
+}*/
 
 //const addLikeElementToCard = (cardElement, card, user) => {
 // 5. Лайк карточки
@@ -242,7 +245,7 @@ function createCard(card, user) {
 
 
 // обработчик события submit для формы добавления новой карточки
-function submitFormAddCard(evt) {
+/*function submitFormAddCard(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
@@ -261,7 +264,7 @@ function submitFormAddCard(evt) {
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   // addCard(card, cardContainer);
 
-  buttonSaveCard.textContent = "Сохранение...";
+ buttonSaveCard.textContent = "Сохранение...";
   createNewCard(placeName.value, placePic.value)
     .then(card => {
       addCard(card, cardContainer, userInfo);
@@ -276,4 +279,4 @@ function submitFormAddCard(evt) {
     .finally(() => {
       buttonSaveCard.textContent = "Создать";
     })
-}
+}*/
