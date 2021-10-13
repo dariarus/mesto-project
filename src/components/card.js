@@ -14,6 +14,7 @@ class Card {
     this._likes = data.likes;
     //this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
+
   }
 
   _getElement() {
@@ -33,10 +34,23 @@ class Card {
     likesCount.textContent = this._likes.length;
   }
 
-  setLikeColor() {
+  //Костя 12.10
+
+  _setLikeListener() {
+    this._cardElement.querySelector('.gallery-item__like').addEventListener("click", () => {
+    this._setLikeColor();
+    });
+  };
+
+  _toggleLike() {
+    this._cardElement.querySelector('.gallery-item__like').classList.toggle('gallery-item__like_active');
+  };
+
+
+
+  _setLikeColor() {
     const cardLike = this._cardElement.querySelector('.gallery-item__like');
     cardLike.classList.add('gallery-item__like_active');
-
   }
 
   setDeleteElement() {
@@ -50,9 +64,14 @@ class Card {
 
   }
 
+
+
+
   createCard() {
     this._cardElement = this._getElement();
     this._addCardInfo();
+    this._setLikeListener();
+
 
     return this._cardElement;
   }
@@ -81,10 +100,10 @@ export function init(user) {
       const defaultCardList = new Section({
         data: cardList,
         renderer: (item) => {
-          const card = new Card(item, '#card-template');
+          const card = new Card(item, '#card-template' );
           const cardItem = card.createCard();
           if (item.likes && item.likes.some(like => like._id === user._id)) {
-            card.setLikeColor();
+            card._setLikeColor();
           }
           if (user._id === item.owner._id) {
             card.setDeleteElement();
@@ -112,6 +131,7 @@ export function init(user) {
     toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
     hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
   });
+
 // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
   //formAddCardElement.addEventListener('submit', submitFormAddCard);
   // обработчик событий для кнопки закрытия попапа добавления карточки
