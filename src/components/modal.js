@@ -19,8 +19,8 @@ export class Popup {
     });
   }
 
-  close() {
-    this._popupSelector.classList.remove('popup_opened');
+  close(currentPopup) {
+    currentPopup.classList.remove('popup_opened');
     // удаление обрабтчика с документа, когда не нужно отслеживать кнопку ESC, т.к. попап закрыт
     document.removeEventListener('keydown', (evt) => {
       this._handleEscClose(evt);
@@ -29,13 +29,13 @@ export class Popup {
 
   setEventListeners() { // слушатель на кнопке закрытия каждого их попапов и закрытие по клику на оверлэй
     this._popupSelector.querySelector('.popup__close-icon').addEventListener('click', () => {
-      this.close();
+      this.close(this._popupSelector);
     });
     this._popupSelector.addEventListener('mousedown', (evt) => {
-      this.close();
+      this.close(evt.target);
       evt.stopPropagation();
-    })
-  }
+    });
+  };
 }
 
 
@@ -52,7 +52,6 @@ class PopupWithImage extends Popup {
     this._popupSelector.querySelector('.popup__image-signature').textContent = this._name;
   }
 }
-
 
 
 export function init() {
@@ -81,9 +80,9 @@ function addListenerToOverlay() {
   const popupList = document.querySelectorAll('.popup');
   popupList.forEach(popupListItem => {
     popupListItem.addEventListener('mousedown', (evt) => {
-      const popup = new Popup(evt.target);
-      popup.close();
-      // closePopup(evt.target);
+      // const popup = new Popup(evt.target);
+      // popup.close();
+      closePopup(evt.target);
       // отмена всплытия события до .popup, чтобы можно было воспользоваться формой в .popup__container
       evt.stopPropagation();
     });
