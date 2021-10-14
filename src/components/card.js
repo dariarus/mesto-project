@@ -6,7 +6,7 @@ import Section from "./Section.js";
 import {Popup} from "./modal.js";
 
 /*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
-class Card {
+export class Card {
   constructor(data, cardSelector) {
     // this._data = data;
     this._link = data.link;
@@ -38,15 +38,13 @@ class Card {
 
   _setLikeListener() {
     this._cardElement.querySelector('.gallery-item__like').addEventListener("click", () => {
-    this._setLikeColor();
+      this._setLikeColor();
     });
   };
 
   _toggleLike() {
     this._cardElement.querySelector('.gallery-item__like').classList.toggle('gallery-item__like_active');
   };
-
-
 
   _setLikeColor() {
     const cardLike = this._cardElement.querySelector('.gallery-item__like');
@@ -64,14 +62,10 @@ class Card {
 
   }
 
-
-
-
   createCard() {
     this._cardElement = this._getElement();
     this._addCardInfo();
     this._setLikeListener();
-
 
     return this._cardElement;
   }
@@ -85,7 +79,7 @@ const buttonClosePhoto = popupOpenPhoto.querySelector('.popup__close-icon_close-
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
 
-const buttonAddCard = document.querySelector('.profile__add-button');
+
 /*1.1 Открытие и закрытие модального окна */
 const buttonSaveCard = popupAddCard.querySelector('.popup__save-button');
 // (6.) поиск контейнера для карточек в DOM
@@ -100,7 +94,7 @@ export function init(user) {
       const defaultCardList = new Section({
         data: cardList,
         renderer: (item) => {
-          const card = new Card(item, '#card-template' );
+          const card = new Card(item, '#card-template');
           const cardItem = card.createCard();
           if (item.likes && item.likes.some(like => like._id === user._id)) {
             card._setLikeColor();
@@ -116,28 +110,21 @@ export function init(user) {
     .catch((err) => {
       console.log(err);
     })
-// initialCards.forEach(item => {
-//   addCard(item, cardContainer);
-// });
-  // обработчик событий для кнопки закрытия попапа с фотографией
-/*  buttonClosePhoto.addEventListener('click', () => {
-    closePopup(popupOpenPhoto);
-  });*/
   // обработчик событий для кнопки открытия попапа добавления карточки
-  buttonAddCard.addEventListener('click', () => {
-    const popup = new Popup(popupAddCard);
-    popup.open();
-    //openPopup(popupAddCard);
-    toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
-    hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
-  });
+  // buttonAddCard.addEventListener('click', () => {
+  //   const popup = new Popup(popupAddCard);
+  //   popup.open();
+  //   //openPopup(popupAddCard);
+  //   toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
+  //   hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
+  // });
 
 // Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
   //formAddCardElement.addEventListener('submit', submitFormAddCard);
   // обработчик событий для кнопки закрытия попапа добавления карточки
- /* buttonCloseAddCard.addEventListener('click', () => {
-    closePopup(popupAddCard);
-  });*/
+  /* buttonCloseAddCard.addEventListener('click', () => {
+     closePopup(popupAddCard);
+   });*/
 }
 
 // функция открытия попапа с изображением из карточки
@@ -263,40 +250,53 @@ function createCard(card, user) {
   return cardElement;
 }
 
-
+// вставка новых значений с помощью аналогичного объявленному выше массива на страницу из полей формы, значения которых извлекаются с помощью value
+// const card = {
+//   name: placeName.value,
+//   link: placePic.value
+// };
 // обработчик события submit для формы добавления новой карточки
-/*function submitFormAddCard(evt) {
+function submitFormAddCard(evt) {
   //отмена стандартной отправки формы
   evt.preventDefault();
 
   // поиск полей добавления названия места и ссылки на фотографию
-  const placeName = formAddCardElement.querySelector('.popup__item_type_place');
-  const placePic = formAddCardElement.querySelector('.popup__item_type_link');
+  //formAddCardElement.querySelector('.popup__item_type_place');
+  //const placePic = formAddCardElement.querySelector('.popup__item_type_link');
 
-  // вставка новых значений с помощью аналогичного объявленному выше массива на страницу из полей формы, значения которых извлекаются с помощью value
-  // const card = {
-  //   name: placeName.value,
-  //   link: placePic.value
-  // };
+  const cardData = {
+    name: formAddCardElement.querySelector('.popup__item_type_place'),
+    link: formAddCardElement.querySelector('.popup__item_type_link')
+  };
 
   // вызов функции добавления карточки на страницу, внутри которой есть функция для создания самой разметки карточки. Передаваемые агрументы:
   //      1 - массив карточек - либо статичный для отрисовки дефолтных, либо массив, создаваемый при передачи данных из фориы добавления карточки;
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   // addCard(card, cardContainer);
 
- buttonSaveCard.textContent = "Сохранение...";
-  createNewCard(placeName.value, placePic.value)
-    .then(card => {
-      addCard(card, cardContainer, userInfo);
-      formAddCardElement.reset();
-// здесь же - вызов функции закрытия попапа с формой добавления карточки,
-// т.к. после нажатия на submit он в любом случае д/закрываться
-      closePopup(popupAddCard);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      buttonSaveCard.textContent = "Создать";
-    })
-}*/
+  buttonSaveCard.textContent = "Сохранение...";
+//   createNewCard(placeName.value, placePic.value)
+//     .then(card => {
+//       addCard(card, cardContainer, userInfo);
+//       formAddCardElement.reset();
+// // здесь же - вызов функции закрытия попапа с формой добавления карточки,
+// // т.к. после нажатия на submit он в любом случае д/закрываться
+//       closePopup(popupAddCard);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     })
+//     .finally(() => {
+//       buttonSaveCard.textContent = "Создать";
+//     })
+// }
+  const newCard = new Section({
+    data: cardData,
+    renderer: (item) => {
+      const card = new Card(item, '#card-template');
+      const cardItem = card.createCard();
+
+      newCard.setItem(cardItem);
+    }
+  }, cardContainer);
+}

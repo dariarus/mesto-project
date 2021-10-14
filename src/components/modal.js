@@ -1,6 +1,10 @@
+import Section from "./Section";
+import {Card} from './card.js';
+import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
+
 export class Popup {
   constructor(popupSelector) {
-    this._popupSelector = popupSelector;
+    this._popupSelector = document.querySelector(popupSelector);
   }
 
   _handleEscClose(evt) {
@@ -28,6 +32,7 @@ export class Popup {
   }
 
   setEventListeners() { // слушатель на кнопке закрытия каждого их попапов и закрытие по клику на оверлэй
+    console.log(this._popupSelector);
     this._popupSelector.querySelector('.popup__close-icon').addEventListener('click', () => {
       this.close(this._popupSelector);
     });
@@ -53,15 +58,69 @@ class PopupWithImage extends Popup {
   }
 }
 
+class PopupWithForm extends Popup {
+  constructor(popupSelector, handlerSubmitForm) {
+    super(popupSelector);
+    this._handlerSubmitForm = handlerSubmitForm;
+  }
+
+  _getInputValues() {
+
+
+    // достаём все элементы полей
+    this._inputList = this._popupSelector.querySelectorAll('.popup__item');
+    // создаём пустой объект
+    this._formValues = {};
+    // добавляем в этот объект значения всех полей
+    this._inputList.forEach(input => {
+      this._formValues[input.name] = input.value; // создание ключа input.name внутри объекта со значением input.value
+    });
+    this._formValues['likes'] = [];
+    console.log(this._formValues);
+    // возвращаем объект значений
+    return this._formValues;
+  }
+
+  // close() {
+  //   super.close();
+  //
+  // }
+
+  setEventListeners() {
+    super.setEventListeners();
+    const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
+    const formAddCardElement = document.querySelector('[name="add card form"]');
+    formAddCardElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      this._handlerSubmitForm(evt);
+      toggleButtonInPopup(this._popupSelector, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
+      hideInputErrorInPopup(this._popupSelector, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
+      super.close(this._popupSelector);
+    });
+  }
+
+}
+
+function handlerSubmitFormAddCard(evt) {
+  //отмена стандартной отправки формы
+  evt.preventDefault();
+
+  const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
+  const cardContainer = document.querySelector('.gallery');
+  buttonSaveCard.textContent = "Сохранение...";
+  const newCard = new Card(this._getInputValues(), '#card-template');
+
+  document.querySelector('.gallery').prepend(newCard.createCard());
+}
 
 export function init() {
-  document.querySelectorAll('.popup').forEach(popupItem => {
-    const popup = new Popup(popupItem);
-    popup.setEventListeners();
+  const buttonAddCard = document.querySelector('.profile__add-button');
+  buttonAddCard.addEventListener('click', () => {
+    const popupAddCard = new PopupWithForm('.popup_type_add-card', handlerSubmitFormAddCard);
+    popupAddCard.open();
+    popupAddCard.setEventListeners();
   });
 
-
-  //addListenerToOverlay();
 }
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля
