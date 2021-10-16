@@ -1,10 +1,14 @@
 import Section from "./Section";
 import {Card} from './card.js';
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
+import {api} from "./api";
+import {userInfo} from "../pages";
 
 export class Popup {
   constructor(popupSelector) {
     this._popupSelector = document.querySelector(popupSelector);
+    this._formSelector = this._popupSelector.querySelector('.popup__form');
+    this._setDefaultEventListeners();
   }
 
   _handleEscClose(evt) {
@@ -31,42 +35,44 @@ export class Popup {
     });
   }
 
-  setEventListeners() { // слушатель на кнопке закрытия каждого их попапов и закрытие по клику на оверлэй
+  _setDefaultEventListeners() { // слушатель на кнопке закрытия каждого их попапов и закрытие по клику на оверлэй
     console.log(this._popupSelector);
     this._popupSelector.querySelector('.popup__close-icon').addEventListener('click', () => {
       this.close(this._popupSelector);
     });
     this._popupSelector.addEventListener('mousedown', (evt) => {
-      this.close(evt.target);
       evt.stopPropagation();
+      this.close(evt.target);
     });
   };
 }
 
 
-class PopupWithImage extends Popup {
-  constructor(data, popupSelector) {
+export class PopupWithImage extends Popup {
+  constructor(popupSelector) {
     super(popupSelector);
-    this._link = data.link;
-    this._name = data.name;
   }
 
-  open() {
+  static generateElement(popupSelector) {
+    const result = new PopupWithImage(popupSelector);
+    result.setDefaultEventListeners();
+  }
+
+  open(data) {
     super.open();
-    this._popupSelector.querySelector('.popup__opened-image').src = this._link;
-    this._popupSelector.querySelector('.popup__image-signature').textContent = this._name;
+    this._popupSelector.querySelector('.popup__opened-image').src = data.link;
+    this._popupSelector.querySelector('.popup__image-signature').textContent = data.name;
   }
 }
 
-class PopupWithForm extends Popup {
+
+export class PopupWithForm extends Popup {
   constructor(popupSelector, handlerSubmitForm) {
     super(popupSelector);
     this._handlerSubmitForm = handlerSubmitForm;
   }
 
   _getInputValues() {
-
-
     // достаём все элементы полей
     this._inputList = this._popupSelector.querySelectorAll('.popup__item');
     // создаём пустой объект
@@ -81,13 +87,13 @@ class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  // close() {
-  //   super.close();
-  //
-  // }
+  close(currentPopup) {
+    super.close(currentPopup);
+    this._formSelector.reset();
+  }
 
-  setEventListeners() {
-    super.setEventListeners();
+  _setDefaultEventListeners() {
+    super._setDefaultEventListeners();
     const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
     const formAddCardElement = document.querySelector('[name="add card form"]');
     formAddCardElement.addEventListener('submit', (evt) => {
@@ -95,33 +101,22 @@ class PopupWithForm extends Popup {
       this._handlerSubmitForm(evt);
       toggleButtonInPopup(this._popupSelector, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
       hideInputErrorInPopup(this._popupSelector, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
-      super.close(this._popupSelector);
+      this.close(this._popupSelector);
+
+      this._formSelector.addEventListener('mousedown', (evt) => {
+        evt.stopPropagation();
+      })
     });
   }
 
 }
 
-function handlerSubmitFormAddCard(evt) {
-  //отмена стандартной отправки формы
-  evt.preventDefault();
 
-  const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
-  const cardContainer = document.querySelector('.gallery');
-  buttonSaveCard.textContent = "Сохранение...";
-  const newCard = new Card(this._getInputValues(), '#card-template');
 
-  document.querySelector('.gallery').prepend(newCard.createCard());
-}
 
-export function init() {
-  const buttonAddCard = document.querySelector('.profile__add-button');
-  buttonAddCard.addEventListener('click', () => {
-    const popupAddCard = new PopupWithForm('.popup_type_add-card', handlerSubmitFormAddCard);
-    popupAddCard.open();
-    popupAddCard.setEventListeners();
-  });
 
-}
+
+
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля
 /*function handleESC(evt) {

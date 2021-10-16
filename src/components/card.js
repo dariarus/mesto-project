@@ -7,13 +7,14 @@ import {Popup} from "./modal.js";
 
 /*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
 export class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handlers) {
     // this._data = data;
     this._link = data.link;
     this._name = data.name;
     this._likes = data.likes;
     //this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
+    this._handlers = handlers;
 
   }
 
@@ -60,12 +61,22 @@ export class Card {
     const referenceElement = this._cardElement.querySelector('.gallery-item__content-text');
     referenceElement.before(basket);
 
+    if (this._handlers && this._handlers.deleteCard) {
+      basket.addEventListener('click', this._handlers.deleteCard);
+    }
   }
 
-  createCard() {
+  _setOpenCardImageListener() {
+    if (this._handlers && this._handlers.openCardImage) {
+      this._cardElement.querySelector('.gallery-item__photo').addEventListener('click', this._handlers.openCardImage);
+    }
+  }
+
+  generateElement() {
     this._cardElement = this._getElement();
     this._addCardInfo();
     this._setLikeListener();
+    this._setOpenCardImageListener()
 
     return this._cardElement;
   }
@@ -83,49 +94,12 @@ const buttonCloseAddCard = popupAddCard.querySelector('.popup__close-icon');
 /*1.1 Открытие и закрытие модального окна */
 const buttonSaveCard = popupAddCard.querySelector('.popup__save-button');
 // (6.) поиск контейнера для карточек в DOM
-const cardContainer = document.querySelector('.gallery');
+//const cardContainer = document.querySelector('.gallery');
 // (6.) поиск формы создания новой карточки в DOM
 const formAddCardElement = document.querySelector('[name="add card form"]');
 
-export function init(user) {
-  getCards()
-    .then((cardList) => {
-      cardList.reverse();
-      const defaultCardList = new Section({
-        data: cardList,
-        renderer: (item) => {
-          const card = new Card(item, '#card-template');
-          const cardItem = card.createCard();
-          if (item.likes && item.likes.some(like => like._id === user._id)) {
-            card._setLikeColor();
-          }
-          if (user._id === item.owner._id) {
-            card.setDeleteElement();
-          }
-          defaultCardList.setItem(cardItem);
-        }
-      }, cardContainer);
-      defaultCardList.renderItems();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  // обработчик событий для кнопки открытия попапа добавления карточки
-  // buttonAddCard.addEventListener('click', () => {
-  //   const popup = new Popup(popupAddCard);
-  //   popup.open();
-  //   //openPopup(popupAddCard);
-  //   toggleButtonInPopup(popupAddCard, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
-  //   hideInputErrorInPopup(popupAddCard, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
-  // });
 
-// Прикрепление обработчика к форме, который будет следить за событием “submit” - «отправка» для добавления карточки
-  //formAddCardElement.addEventListener('submit', submitFormAddCard);
-  // обработчик событий для кнопки закрытия попапа добавления карточки
-  /* buttonCloseAddCard.addEventListener('click', () => {
-     closePopup(popupAddCard);
-   });*/
-}
+
 
 // функция открытия попапа с изображением из карточки
 /*function openPopupImage(card) {
@@ -274,22 +248,7 @@ function submitFormAddCard(evt) {
   //      2 - контейнер в разметке, куда надо вставлять карточки, полученные из массивов
   // addCard(card, cardContainer);
 
-  buttonSaveCard.textContent = "Сохранение...";
-//   createNewCard(placeName.value, placePic.value)
-//     .then(card => {
-//       addCard(card, cardContainer, userInfo);
-//       formAddCardElement.reset();
-// // здесь же - вызов функции закрытия попапа с формой добавления карточки,
-// // т.к. после нажатия на submit он в любом случае д/закрываться
-//       closePopup(popupAddCard);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     })
-//     .finally(() => {
-//       buttonSaveCard.textContent = "Создать";
-//     })
-// }
+
   const newCard = new Section({
     data: cardData,
     renderer: (item) => {

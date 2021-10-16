@@ -1,6 +1,7 @@
 import {closePopup, openPopup} from "./modal.js";
 import {getUser, updateAvatarUrl} from "./api.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate.js";
+import {api} from "./api";
 
 // картинка с Кусто отдается в работу webpack-у для первоначальной загрузки на страницу
 // const defaultAvatar = new URL('../images/Cousteau-photo.jpg', import.meta.url);
@@ -18,6 +19,7 @@ const formAvatarElement = popupEditAvatar.querySelector('[name="update avatar fo
 const inputAvatarUrl = popupEditAvatar.querySelector('.popup__item_type_link');
 
 const buttonSubmitEditAvatar = popupEditAvatar.querySelector('.popup__save-button');
+
 
 export function init(user) {
   updateAvatarOnPage(user.avatar);
@@ -47,7 +49,7 @@ const updateAvatarOnPage = (url) => {
 
 const updateAvatarOnServer = (url) => {
   buttonSubmitEditAvatar.textContent = 'Сохранение...';
-  updateAvatarUrl(url)
+  api.updateAvatarUrl(url)
     .then(user => {
       updateAvatarOnPage(user.avatar);
       closePopup(popupEditAvatar);

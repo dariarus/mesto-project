@@ -1,4 +1,4 @@
-import {saveProfile} from "./api.js";
+import {api} from "./api.js";
 import {openPopup, closePopup} from "./modal.js";
 import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate.js";
 
@@ -51,7 +51,7 @@ function submitFormEditProfile(evt) {
 
   buttonSaveProfile.textContent = 'Сохранение...';
   // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
-  saveProfile(inputUsername.value, inputUserInfo.value)
+  api.saveProfile(inputUsername.value, inputUserInfo.value)
     .then(result => {
       username.textContent = result.name;
       userInfoElement.textContent = result.about;
