@@ -8,14 +8,10 @@ import {Popup} from "./modal.js";
 /*** Созвон 1, 07.10.2021. Создание класса Card, перенос функций ***/
 export class Card {
   constructor(data, cardSelector, handlers) {
-    // this._data = data;
-    this._link = data.link;
-    this._name = data.name;
-    this._likes = data.likes;
+    this._data = data;
     //this._handleCardClick = handleCardClick;
     this._cardSelector = cardSelector;
     this._handlers = handlers;
-
   }
 
   _getElement() {
@@ -28,28 +24,41 @@ export class Card {
 
   _addCardInfo() {
     // найти поля, куда надо добавить содержимое из массива
-    this._cardElement.querySelector('.gallery-item__signature').textContent = this._name;
-    this._cardElement.querySelector('.gallery-item__photo').src = this._link;
-    this._cardElement.querySelector('.gallery-item__photo').alt = this._name;
-    const likesCount = this._cardElement.querySelector('.gallery-item__like-count');
-    likesCount.textContent = this._likes.length;
+    this._cardElement.querySelector('.gallery-item__signature').textContent = this._data.name;
+    this._cardElement.querySelector('.gallery-item__photo').src = this._data.link;
+    this._cardElement.querySelector('.gallery-item__photo').alt = this._data.name;
+    this.refreshLikesCount();
+    // const likesCount = this._cardElement.querySelector('.gallery-item__like-count');
+    // likesCount.textContent = this._likes.length;
   }
 
   //Костя 12.10
 
   _setLikeListener() {
-    this._cardElement.querySelector('.gallery-item__like').addEventListener("click", () => {
-      this._setLikeColor();
+  //  const card = this;
+    this._cardElement.querySelector('.gallery-item__like').addEventListener("click", (evt) => {
+      this._handlers.setLike(evt, this);
+    //  this._handlers.setLike(evt);
     });
   };
 
-  _toggleLike() {
-    this._cardElement.querySelector('.gallery-item__like').classList.toggle('gallery-item__like_active');
-  };
+  // _toggleLike() {
+  //   this._cardElement.querySelector('.gallery-item__like').classList.toggle('gallery-item__like_active');
+  // };
 
-  _setLikeColor() {
+  setLikeColor() {
     const cardLike = this._cardElement.querySelector('.gallery-item__like');
     cardLike.classList.add('gallery-item__like_active');
+  }
+
+  removeLikeColor() {
+    const cardLike = this._cardElement.querySelector('.gallery-item__like');
+    cardLike.classList.remove('gallery-item__like_active');
+  }
+
+  refreshLikesCount() {
+    const countLikeElement = this._cardElement.querySelector('.gallery-item__like-count');
+    countLikeElement.textContent = this._data.likes.length;
   }
 
   setDeleteElement() {

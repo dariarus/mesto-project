@@ -60,11 +60,37 @@ function initCards(user) {
             },
             openCardImage: () => {
               popupOpenPhoto.open(cardData);
+            },
+            setLike: (evt, card) => {
+              if (cardData.likes && cardData.likes.some(like => like._id === user._id)) {
+                api.deleteLike(cardData._id)
+                  .then(likedCard => {
+                    cardData.likes = likedCard.likes;
+                    // поскольку есть card, в который прокинут this, evt.target для определения кликнутого лайка больше не нужен
+                    // изменение класса для кикнутого лайка (установленного и снятого)
+                    card.removeLikeColor();
+                    card.refreshLikesCount();
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else {
+                api.putLike(cardData._id)
+                  .then(likedCard => {
+                    cardData.likes = likedCard.likes;
+                    // изменение класса для кикнутого лайка (установленного и снятого)
+                    card.setLikeColor();
+                    card.refreshLikesCount();
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
             }
           });
           const cardElement = card.generateElement();
           if (cardData.likes && cardData.likes.some(like => like._id === user._id)) {
-            card._setLikeColor();
+            card.setLikeColor();
           }
           if (user._id === cardData.owner._id) {
             card.setDeleteElement();
