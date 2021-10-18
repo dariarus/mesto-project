@@ -32,22 +32,22 @@ buttonEditAvatar.addEventListener('mouseleave', () => {
   buttonEditAvatar.classList.remove('profile__edit-avatar-button_active');
 });
 
-buttonEditAvatar.addEventListener('click', () => {
-  openPopup(popupEditAvatar);
-  const button = popupEditAvatar.querySelector('.popup__save-button');
-  toggleButtonInPopup(popupEditAvatar, button, 'popup__save-button_disabled')
-  hideInputErrorInPopup(popupEditAvatar, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
-});
-
-buttonClosePopupEditAvatar.addEventListener('click', () => {
-  closePopup(popupEditAvatar);
-});
+// buttonEditAvatar.addEventListener('click', () => {
+//   openPopup(popupEditAvatar);
+//   const button = popupEditAvatar.querySelector('.popup__save-button');
+//   toggleButtonInPopup(popupEditAvatar, button, 'popup__save-button_disabled')
+//   hideInputErrorInPopup(popupEditAvatar, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
+// });
+//
+// buttonClosePopupEditAvatar.addEventListener('click', () => {
+//   closePopup(popupEditAvatar);
+// });
 
 const updateAvatarOnPage = (url) => {
   imageAvatar.src = url;
 }
 
-const updateAvatarOnServer = (url) => {
+/*const updateAvatarOnServer = (url) => {
   buttonSubmitEditAvatar.textContent = 'Сохранение...';
   api.updateAvatarUrl(url)
     .then(user => {
@@ -70,4 +70,4 @@ const submitEditAvatar = (evt) => {
 }
 
 formAvatarElement.addEventListener('submit', submitEditAvatar);
-
+*/

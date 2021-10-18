@@ -32,11 +32,11 @@
               </div>
               <div class="profile__info">
                 <div class="profile__edit-profile-wrap">
-                  <h1 class="profile__username"></h1>
+                  <h1 class="profile__username">Daria</h1>
                   <button aria-label="кнопка редактирования профиля" class="profile__edit-button"
                           data-popup-selector="#edit-profile-popup" type="button"></button>
                 </div>
-                <p class="profile__user-info"></p>
+                <p class="profile__user-info">Info</p>
               </div>
             </div>
             <button aria-label="кнопка для добавления новых карточек на страницу" class="profile__add-button"
@@ -62,13 +62,13 @@
             <h2 class="popup__form-name">Редактировать профиль</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input class="popup__item popup__item_type_username" name="username" placeholder="Имя" type="text"
+                <input class="popup__item popup__item_type_username" name="name" placeholder="Имя" type="text"
                        minlength="2" maxlength="40" id="input-username-element"
                        required>
                 <span class="popup__input-error input-username-element-error"></span>
               </label>
               <label>
-                <input class="popup__item popup__item_type_user-info" name="about user" placeholder="О себе" type="text"
+                <input class="popup__item popup__item_type_user-info" name="about" placeholder="О себе" type="text"
                        minlength="2" maxlength="200" id="input-userinfo-element"
                        required>
                 <span class="popup__input-error input-userinfo-element-error"></span>
@@ -117,11 +117,11 @@
       <!-- Update Profile Photo Popup -->
       <div class="popup popup_type_update-avatar">
         <div class="popup__container">
-          <form action="URL" class="popup__form" name="update avatar form">
+          <form action="URL" class="popup__form" name="change avatar form">
             <h2 class="popup__form-name">Обновить аватар</h2>
             <fieldset class="popup__fieldset">
               <label>
-                <input class="popup__item popup__item_type_link" name="avatar link" placeholder="Ссылка на картинку"
+                <input class="popup__item popup__item_type_link" name="avatar" placeholder="Ссылка на картинку"
                        type="url" id="input-avatar-link-element" required>
                 <span class="popup__input-error input-avatar-link-element-error"></span>
               </label>

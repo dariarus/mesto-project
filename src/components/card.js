@@ -32,19 +32,11 @@ export class Card {
     // likesCount.textContent = this._likes.length;
   }
 
-  //Костя 12.10
-
   _setLikeListener() {
-  //  const card = this;
     this._cardElement.querySelector('.gallery-item__like').addEventListener("click", (evt) => {
       this._handlers.setLike(evt, this);
-    //  this._handlers.setLike(evt);
     });
   };
-
-  // _toggleLike() {
-  //   this._cardElement.querySelector('.gallery-item__like').classList.toggle('gallery-item__like_active');
-  // };
 
   setLikeColor() {
     const cardLike = this._cardElement.querySelector('.gallery-item__like');
@@ -76,8 +68,8 @@ export class Card {
   }
 
   _setOpenCardImageListener() {
-    if (this._handlers && this._handlers.openCardImage) {
-      this._cardElement.querySelector('.gallery-item__photo').addEventListener('click', this._handlers.openCardImage);
+    if (this._handlers && this._handlers.handleCardClick) {
+      this._cardElement.querySelector('.gallery-item__photo').addEventListener('click', this._handlers.handleCardClick);
     }
   }
 

@@ -8,14 +8,14 @@ export class Popup {
   constructor(popupSelector) {
     this._popupSelector = document.querySelector(popupSelector);
     this._formSelector = this._popupSelector.querySelector('.popup__form');
-    this._setDefaultEventListeners();
+    this._setDefaultPopupEventListeners();
   }
 
   _handleEscClose(evt) {
     if (evt.key === 'Escape') {
-      document.querySelectorAll('.popup_opened').forEach(() => {
+      //document.querySelectorAll('.popup_opened').forEach(() => {
         this._popupSelector.classList.remove('popup_opened');
-      });
+      //});
     }
   }
 
@@ -35,7 +35,7 @@ export class Popup {
     });
   }
 
-  _setDefaultEventListeners() { // слушатель на кнопке закрытия каждого их попапов и закрытие по клику на оверлэй
+  _setDefaultPopupEventListeners() { // слушатель на кнопке закрытия каждого из попапов и закрытие по клику на оверлэй
     console.log(this._popupSelector);
     this._popupSelector.querySelector('.popup__close-icon').addEventListener('click', () => {
       this.close(this._popupSelector);
@@ -53,11 +53,6 @@ export class PopupWithImage extends Popup {
     super(popupSelector);
   }
 
-  static generateElement(popupSelector) {
-    const result = new PopupWithImage(popupSelector);
-    result.setDefaultEventListeners();
-  }
-
   open(data) {
     super.open();
     this._popupSelector.querySelector('.popup__opened-image').src = data.link;
@@ -70,6 +65,7 @@ export class PopupWithForm extends Popup {
   constructor(popupSelector, handlerSubmitForm) {
     super(popupSelector);
     this._handlerSubmitForm = handlerSubmitForm;
+    this._setDefaultEventListeners();
   }
 
   _getInputValues() {
@@ -81,10 +77,19 @@ export class PopupWithForm extends Popup {
     this._inputList.forEach(input => {
       this._formValues[input.name] = input.value; // создание ключа input.name внутри объекта со значением input.value
     });
-    this._formValues['likes'] = [];
+    //  this._formValues['likes'] = [];
     console.log(this._formValues);
     // возвращаем объект значений
     return this._formValues;
+  }
+
+  setInputValue(inputName, inputValue) {
+    this._inputList = this._popupSelector.querySelectorAll('.popup__item');
+    this._inputList.forEach(input => {
+      if (input.name === inputName) {
+        input.value = inputValue;
+      }
+    })
   }
 
   close(currentPopup) {
@@ -93,29 +98,21 @@ export class PopupWithForm extends Popup {
   }
 
   _setDefaultEventListeners() {
-    super._setDefaultEventListeners();
     const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
     const formAddCardElement = document.querySelector('[name="add card form"]');
     formAddCardElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._handlerSubmitForm(evt);
+      this._handlerSubmitForm(this);
       toggleButtonInPopup(this._popupSelector, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
       hideInputErrorInPopup(this._popupSelector, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
       this.close(this._popupSelector);
-
-      this._formSelector.addEventListener('mousedown', (evt) => {
-        evt.stopPropagation();
-      })
     });
+    this._formSelector.addEventListener('mousedown', (evt) => {
+      evt.stopPropagation();
+    })
   }
 
 }
-
-
-
-
-
-
 
 
 // обработчик событий клавиши Esc для закрытия попапа редактирования профиля

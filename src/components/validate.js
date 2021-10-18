@@ -1,5 +1,14 @@
 import {toggleButtonState} from "./utils.js";
 
+class FormValidator {
+  constructor(options, validatingFormElement) {
+    this._options = options;
+    this._validatingFormElement = document
+  }
+}
+
+
+
 /** Валидация полей **/
 /*- 1. Найти элементы -*/
 

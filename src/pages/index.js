@@ -11,6 +11,7 @@ import {Card} from "../components/card";
 import Api from "../components/api.js";
 import {api} from "../components/api.js";
 import {closePopup, PopupWithForm, PopupWithImage} from "../components/modal";
+import {hideInputErrorInPopup, toggleButtonInPopup} from "../components/validate";
 
 export let userInfo;
 let cardsSection;
@@ -22,10 +23,12 @@ window.onload = function () {
       userInfo = user;
     })
     .then(() => {
-      initProfile(userInfo);
+      // initProfile(userInfo);
       initAvatar(userInfo);
       initCards(userInfo);
-      initPopupWithForm();
+      initPopupAddCard();
+      initPopupEditProfile();
+      initPopupChangeAvatar();
       enableValidation(validationConfig);
     });
 };
@@ -58,7 +61,7 @@ function initCards(user) {
                   console.log(err);
                 })
             },
-            openCardImage: () => {
+            handleCardClick: () => {
               popupOpenPhoto.open(cardData);
             },
             setLike: (evt, card) => {
@@ -106,31 +109,89 @@ function initCards(user) {
 }
 
 
-function initPopupWithForm() {
+function initPopupAddCard() {
   const buttonAddCard = document.querySelector('.profile__add-button');
-  const popupAddCard = new PopupWithForm('.popup_type_add-card', (evt) => {
-      evt.preventDefault();
+  const popupAddCard = new PopupWithForm('.popup_type_add-card', (popup) => {
+    //evt.preventDefault();
+    const buttonSaveCard = popup._popupSelector.querySelector('.popup__save-button');
+    buttonSaveCard.textContent = "Сохранение...";
 
-      const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
-      buttonSaveCard.textContent = "Сохранение...";
+    const inputValues = popup._getInputValues();
 
-      const inputValues = this._getInputValues();
-
-      api.createNewCard(inputValues.name, inputValues.link)
-        .then(cardData => {
-          cardsSection.renderItem(cardData);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          buttonSaveCard.textContent = "Создать";
-        })
-    }
-  );
+    api.createNewCard(inputValues.name, inputValues.link)
+      .then(cardData => {
+        cardsSection.renderItem(cardData);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        buttonSaveCard.textContent = "Создать";
+      })
+  });
   buttonAddCard.addEventListener('click', () => {
     popupAddCard.open();
   });
 }
 
+function initPopupEditProfile() {
+  const buttonEditProfile = document.querySelector('.profile__edit-button');
+  const popupEditProfile = new PopupWithForm('.popup_type_edit-profile', (popup) => {
 
+    const buttonSaveProfile = popup._popupSelector.querySelector('.popup__save-button');
+    buttonSaveProfile.textContent = 'Сохранение...';
+
+    const inputValues = popup._getInputValues();
+
+    const usernameElement = popup._popupSelector.querySelector('.profile__username');
+    const userInfoElement = popup._popupSelector.querySelector('.profile__user-info');
+
+    // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
+    api.saveProfile(inputValues.name, inputValues.about)
+      .then(result => {
+        usernameElement.textContent = result.name;
+        userInfoElement.textContent = result.about;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        buttonSaveProfile.textContent = 'Сохранить';
+      })
+  });
+
+  buttonEditProfile.addEventListener('click', () => {
+    popupEditProfile.open();
+    const usernameElement = document.querySelector('.profile__username');
+    const userInfoElement = document.querySelector('.profile__user-info');
+
+    popupEditProfile.setInputValue('name', usernameElement.textContent);
+    popupEditProfile.setInputValue('about', userInfoElement.textContent);
+  })
+}
+
+function initPopupChangeAvatar() {
+  const buttonChangeAvatar = document.querySelector('.profile__edit-avatar-button');
+  const popupChangeAvatar = new PopupWithForm('.popup_type_update-avatar', (popup) => {
+
+    const buttonSubmitEditAvatar = popup._popupSelector.querySelector('.popup__save-button');
+    buttonSubmitEditAvatar.textContent = 'Сохранение...';
+
+    const inputValues = popup._getInputValues();
+
+    api.updateAvatarUrl(inputValues.avatar)
+      .then(user => {
+        const imageAvatar = document.querySelector('.profile__avatar');
+        imageAvatar.src = user.avatar;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        buttonSubmitEditAvatar.textContent = 'Сохранить';
+      })
+  })
+  buttonChangeAvatar.addEventListener('click', () => {
+    popupChangeAvatar.open();
+  });
+}

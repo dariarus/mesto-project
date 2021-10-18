@@ -16,7 +16,7 @@ const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonSaveProfile = popupEditProfile.querySelector('.popup__save-button');
 const buttonCloseEditProfile = popupEditProfile.querySelector('.popup__close-icon');
 
-export function init(user) {
+/*export function init(user) {
 // 1.2 Поля формы. Отображение значений по умолчанию в полях формы редактирования профиля
   username.textContent = user.name;
   userInfoElement.textContent = user.about;
@@ -29,7 +29,7 @@ export function init(user) {
   // обработчик событий для кнопки открытия попапа редактирования профиля
 // + извлечение контента со страницы и заполнение им полей формы данного попапа
   buttonEditProfile.addEventListener('click', openPopupEditProfile);
-}
+}*/
 
 // 1.2 Поля формы. Отображение значений по умолчанию в полях формы редактирования профиля
 function openPopupEditProfile() {
@@ -45,28 +45,28 @@ function openPopupEditProfile() {
 // 1.3 Редактирование имени и информации о себе
 // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
 // Функция обработчика «отправки» формы, хотя пока она никуда отправляться не будет
-function submitFormEditProfile(evt) {
-  //отмена стандартной отправки формы
-  evt.preventDefault();
+// function submitFormEditProfile(evt) {
+//   //отмена стандартной отправки формы
+//   evt.preventDefault();
+//
+//   buttonSaveProfile.textContent = 'Сохранение...';
+//   // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
+//   api.saveProfile(inputUsername.value, inputUserInfo.value)
+//     .then(result => {
+//       username.textContent = result.name;
+//       userInfoElement.textContent = result.about;
+//       // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
+//       closePopup(popupEditProfile);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     })
+//     .finally(() => {
+//       buttonSaveProfile.textContent = 'Сохранить';
+//     })
+// }
 
-  buttonSaveProfile.textContent = 'Сохранение...';
-  // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
-  api.saveProfile(inputUsername.value, inputUserInfo.value)
-    .then(result => {
-      username.textContent = result.name;
-      userInfoElement.textContent = result.about;
-      // здесь же - вызов функции закрытия попапа, т.к. после нажатия на submit он в любом случае д.закрываться
-      closePopup(popupEditProfile);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      buttonSaveProfile.textContent = 'Сохранить';
-    })
-}
-
-// обработчик событий для кнопки закрытия попапа редактирования профиля
-buttonCloseEditProfile.addEventListener('click', () => {
-  closePopup(popupEditProfile);
-});
+// // обработчик событий для кнопки закрытия попапа редактирования профиля
+// buttonCloseEditProfile.addEventListener('click', () => {
+//   closePopup(popupEditProfile);
+// });

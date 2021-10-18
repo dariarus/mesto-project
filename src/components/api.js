@@ -30,7 +30,6 @@ export default class Api {
       .then(res => this._getResponseData(res));
   }
 
-
   getUser() {
     return fetch(`${this._options.baseUrl}/users/me`, {
       headers: this._options.headers
@@ -64,7 +63,6 @@ export default class Api {
     })
       .then(res => this._getResponseData(res));
   }
-
 
   deleteLike(id) {
     return fetch(`${this._options.baseUrl}/cards/likes/${id}`, {
