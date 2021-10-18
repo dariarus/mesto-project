@@ -1,30 +1,25 @@
-import Section from "./Section";
-import {Card} from './card.js';
-import {hideInputErrorInPopup, toggleButtonInPopup} from "./validate";
-import {api} from "./api";
-import {userInfo} from "../pages";
-
 export class Popup {
   constructor(popupSelector) {
-    this._popupSelector = document.querySelector(popupSelector);
-    this._formSelector = this._popupSelector.querySelector('.popup__form');
+    this._popupElement = document.querySelector(popupSelector);
+    this._formElement = this._popupElement.querySelector('.popup__form');
     this._setDefaultPopupEventListeners();
   }
 
   _handleEscClose(evt) {
     if (evt.key === 'Escape') {
       //document.querySelectorAll('.popup_opened').forEach(() => {
-        this._popupSelector.classList.remove('popup_opened');
+        this._popupElement.classList.remove('popup_opened');
       //});
     }
   }
 
   open() {
-    this._popupSelector.classList.add('popup_opened');
+    this._popupElement.classList.add('popup_opened');
     // добавление обработчика на документ при нажатии кнопки ESC
     document.addEventListener('keydown', (evt) => {
       this._handleEscClose(evt);
     });
+    this._formElement.dispatchEvent(new Event('opened')); // превращаем функцию open в событие
   }
 
   close(currentPopup) {
@@ -36,11 +31,11 @@ export class Popup {
   }
 
   _setDefaultPopupEventListeners() { // слушатель на кнопке закрытия каждого из попапов и закрытие по клику на оверлэй
-    console.log(this._popupSelector);
-    this._popupSelector.querySelector('.popup__close-icon').addEventListener('click', () => {
-      this.close(this._popupSelector);
+    console.log(this._popupElement);
+    this._popupElement.querySelector('.popup__close-icon').addEventListener('click', () => {
+      this.close(this._popupElement);
     });
-    this._popupSelector.addEventListener('mousedown', (evt) => {
+    this._popupElement.addEventListener('mousedown', (evt) => {
       evt.stopPropagation();
       this.close(evt.target);
     });
@@ -55,8 +50,8 @@ export class PopupWithImage extends Popup {
 
   open(data) {
     super.open();
-    this._popupSelector.querySelector('.popup__opened-image').src = data.link;
-    this._popupSelector.querySelector('.popup__image-signature').textContent = data.name;
+    this._popupElement.querySelector('.popup__opened-image').src = data.link;
+    this._popupElement.querySelector('.popup__image-signature').textContent = data.name;
   }
 }
 
@@ -70,7 +65,7 @@ export class PopupWithForm extends Popup {
 
   _getInputValues() {
     // достаём все элементы полей
-    this._inputList = this._popupSelector.querySelectorAll('.popup__item');
+    this._inputList = this._popupElement.querySelectorAll('.popup__item');
     // создаём пустой объект
     this._formValues = {};
     // добавляем в этот объект значения всех полей
@@ -84,7 +79,7 @@ export class PopupWithForm extends Popup {
   }
 
   setInputValue(inputName, inputValue) {
-    this._inputList = this._popupSelector.querySelectorAll('.popup__item');
+    this._inputList = this._popupElement.querySelectorAll('.popup__item');
     this._inputList.forEach(input => {
       if (input.name === inputName) {
         input.value = inputValue;
@@ -94,20 +89,17 @@ export class PopupWithForm extends Popup {
 
   close(currentPopup) {
     super.close(currentPopup);
-    this._formSelector.reset();
+    this._formElement.reset();
   }
 
   _setDefaultEventListeners() {
-    const buttonSaveCard = this._popupSelector.querySelector('.popup__save-button');
-    const formAddCardElement = document.querySelector('[name="add card form"]');
-    formAddCardElement.addEventListener('submit', (evt) => {
+   // const buttonSaveCard = this._popupElement.querySelector('.popup__save-button');
+    this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._handlerSubmitForm(this);
-      toggleButtonInPopup(this._popupSelector, buttonSaveCard, '.popup__form', '.popup__item', 'popup__save-button_disabled')
-      hideInputErrorInPopup(this._popupSelector, '.popup__form', '.popup__item', 'popup__item_type_error', 'popup__input-error_active');
-      this.close(this._popupSelector);
+      this.close(this._popupElement);
     });
-    this._formSelector.addEventListener('mousedown', (evt) => {
+    this._formElement.addEventListener('mousedown', (evt) => {
       evt.stopPropagation();
     })
   }

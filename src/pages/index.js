@@ -1,17 +1,13 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
 import {validationConfig} from "../components/variables.js";
-import {enableValidation} from "../components/validate.js";
 import {init as initAvatar} from "../components/avatar.js";
-import {getUser} from "../components/api.js";
-import {init as initProfile} from "../components/profile.js";
-import {getCards} from "../components/api";
 import Section from "../components/Section";
+import FormValidator from "../components/validate.js"
 import {Card} from "../components/card";
 import Api from "../components/api.js";
 import {api} from "../components/api.js";
-import {closePopup, PopupWithForm, PopupWithImage} from "../components/modal";
-import {hideInputErrorInPopup, toggleButtonInPopup} from "../components/validate";
+import {PopupWithForm, PopupWithImage} from "../components/modal";
 
 export let userInfo;
 let cardsSection;
@@ -23,13 +19,11 @@ window.onload = function () {
       userInfo = user;
     })
     .then(() => {
-      // initProfile(userInfo);
       initAvatar(userInfo);
       initCards(userInfo);
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
-      enableValidation(validationConfig);
     });
 };
 
@@ -109,11 +103,20 @@ function initCards(user) {
 }
 
 
+function initFormValidator(popup) {
+  const formValidator = new FormValidator(validationConfig, popup._formElement);
+  formValidator.enableValidation();
+  popup._formElement.addEventListener('opened', () => {
+    formValidator.hideInitialInputError();
+    formValidator.toggleButtonInPopup();
+  })
+}
+
 function initPopupAddCard() {
   const buttonAddCard = document.querySelector('.profile__add-button');
   const popupAddCard = new PopupWithForm('.popup_type_add-card', (popup) => {
     //evt.preventDefault();
-    const buttonSaveCard = popup._popupSelector.querySelector('.popup__save-button');
+    const buttonSaveCard = popup._popupElement.querySelector('.popup__save-button');
     buttonSaveCard.textContent = "Сохранение...";
 
     const inputValues = popup._getInputValues();
@@ -132,19 +135,21 @@ function initPopupAddCard() {
   buttonAddCard.addEventListener('click', () => {
     popupAddCard.open();
   });
+
+  initFormValidator(popupAddCard);
 }
 
-function initPopupEditProfile() {
+function initPopupEditProfile() { //TODO: связать с юзером, убрать контент из разметки
   const buttonEditProfile = document.querySelector('.profile__edit-button');
   const popupEditProfile = new PopupWithForm('.popup_type_edit-profile', (popup) => {
 
-    const buttonSaveProfile = popup._popupSelector.querySelector('.popup__save-button');
+    const buttonSaveProfile = popup._popupElement.querySelector('.popup__save-button');
     buttonSaveProfile.textContent = 'Сохранение...';
 
     const inputValues = popup._getInputValues();
 
-    const usernameElement = popup._popupSelector.querySelector('.profile__username');
-    const userInfoElement = popup._popupSelector.querySelector('.profile__user-info');
+    const usernameElement = document.querySelector('.profile__username');
+    const userInfoElement = document.querySelector('.profile__user-info');
 
     // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
     api.saveProfile(inputValues.name, inputValues.about)
@@ -161,20 +166,23 @@ function initPopupEditProfile() {
   });
 
   buttonEditProfile.addEventListener('click', () => {
-    popupEditProfile.open();
     const usernameElement = document.querySelector('.profile__username');
     const userInfoElement = document.querySelector('.profile__user-info');
 
     popupEditProfile.setInputValue('name', usernameElement.textContent);
     popupEditProfile.setInputValue('about', userInfoElement.textContent);
-  })
+
+    popupEditProfile.open();
+  });
+
+  initFormValidator(popupEditProfile);
 }
 
 function initPopupChangeAvatar() {
   const buttonChangeAvatar = document.querySelector('.profile__edit-avatar-button');
   const popupChangeAvatar = new PopupWithForm('.popup_type_update-avatar', (popup) => {
 
-    const buttonSubmitEditAvatar = popup._popupSelector.querySelector('.popup__save-button');
+    const buttonSubmitEditAvatar = popup._popupElement.querySelector('.popup__save-button');
     buttonSubmitEditAvatar.textContent = 'Сохранение...';
 
     const inputValues = popup._getInputValues();
@@ -194,4 +202,6 @@ function initPopupChangeAvatar() {
   buttonChangeAvatar.addEventListener('click', () => {
     popupChangeAvatar.open();
   });
+
+  initFormValidator(popupChangeAvatar);
 }
