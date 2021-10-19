@@ -1,7 +1,8 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig} from "../components/variables.js";
+import {validationConfig, userSelector} from "../components/variables.js";
 import {init as initAvatar} from "../components/avatar.js";
+import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/validate.js"
 import {Card} from "../components/card";
@@ -13,12 +14,15 @@ export let userInfo;
 let cardsSection;
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
 
+
 window.onload = function () {
   api.getUser()
     .then(user => {
       userInfo = user;
+      console.log(userInfo);
     })
     .then(() => {
+      initUserInfo(userInfo, userSelector);
       initAvatar(userInfo);
       initCards(userInfo);
       initPopupAddCard();
@@ -34,6 +38,12 @@ window.onload = function () {
 //       'Content-Type': 'application/json'
 //     }
 //   });
+
+function initUserInfo(userData, userSelector) {
+  const initUserInfo = new UserInfo(userSelector);
+  initUserInfo.getUserInfo(userInfo);
+}
+
 
 function initCards(user) {
   api.getCards()

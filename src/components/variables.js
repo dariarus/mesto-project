@@ -35,4 +35,9 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 }
 
-export {initialCards, validationConfig};
+const userSelector = {
+  'name': '.profile__username',
+  'about': '.profile__user-info'
+}
+
+export {initialCards, validationConfig, userSelector};

@@ -78,7 +78,6 @@ export class PopupWithForm extends Popup {
       this._formValues[input.name] = input.value; // создание ключа input.name внутри объекта со значением input.value
     });
     //  this._formValues['likes'] = [];
-    console.log(this._formValues);
     // возвращаем объект значений
     return this._formValues;
   }
