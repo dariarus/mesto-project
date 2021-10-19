@@ -30,7 +30,6 @@ export class Popup {
   }
 
   _setDefaultPopupEventListeners() { // слушатель на кнопке закрытия каждого из попапов и закрытие по клику на оверлэй
-    console.log(this._popupElement);
     this._popupElement.querySelector('.popup__close-icon').addEventListener('click', () => {
       this.close(this._popupElement);
     });
@@ -49,7 +48,6 @@ export class PopupWithImage extends Popup {
 
   open(data) {
     super.open();
-    console.log(data);
     this._popupElement.querySelector('.popup__opened-image').src = data.link;
     this._popupElement.querySelector('.popup__image-signature').textContent = data.name;
   }

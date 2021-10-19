@@ -3,6 +3,7 @@ import './index.css'; //подключить в файл точки входа �
 import {validationConfig, userSelector} from "../components/variables.js";
 import {init as initAvatar} from "../components/avatar.js";
 import UserInfo from "../components/UserInfo.js";
+import Avatar from "../components/avatar.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/validate.js"
 import {Card} from "../components/card";
@@ -19,11 +20,10 @@ window.onload = function () {
   api.getUser()
     .then(user => {
       userInfo = user;
-      console.log(userInfo);
     })
     .then(() => {
       initUserInfo(userInfo, userSelector);
-      initAvatar(userInfo);
+      //initAvatar(userInfo);
       initCards(userInfo);
       initPopupAddCard();
       initPopupEditProfile();
@@ -42,6 +42,9 @@ window.onload = function () {
 function initUserInfo(userData, userSelector) {
   const initUserInfo = new UserInfo(userSelector);
   initUserInfo.getUserInfo(userInfo);
+
+  const userAvatar = new Avatar(userData);
+  userAvatar.setAvatar();
 }
 
 
