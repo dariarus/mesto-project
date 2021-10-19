@@ -1,6 +1,6 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig, userSelector} from "../components/variables.js";
+import {validationConfig, userSelectors} from "../components/variables.js";
 import {init as initAvatar} from "../components/avatar.js";
 import UserInfo from "../components/UserInfo.js";
 import Avatar from "../components/avatar.js";
@@ -22,8 +22,7 @@ window.onload = function () {
       userInfo = user;
     })
     .then(() => {
-      initUserInfo(userInfo, userSelector);
-      //initAvatar(userInfo);
+      initUserInfo(userInfo, userSelectors);
       initCards(userInfo);
       initPopupAddCard();
       initPopupEditProfile();
@@ -39,9 +38,9 @@ window.onload = function () {
 //     }
 //   });
 
-function initUserInfo(userData, userSelector) {
-  const initUserInfo = new UserInfo(userSelector);
-  initUserInfo.getUserInfo(userInfo);
+function initUserInfo(userData, userSelectors) {
+  const initUserInfo = new UserInfo(userSelectors);
+  initUserInfo.setUserInfo(userInfo);
 
   const userAvatar = new Avatar(userData);
   userAvatar.setAvatar();
@@ -178,13 +177,14 @@ function initPopupEditProfile() { //TODO: связать с юзером, убр
       })
   });
 
+
+
   buttonEditProfile.addEventListener('click', () => {
-    const usernameElement = document.querySelector('.profile__username');
-    const userInfoElement = document.querySelector('.profile__user-info');
+    const userInfo = new UserInfo(userSelectors);
+    const user = userInfo.getUserInfo();
 
-    popupEditProfile.setInputValue('name', usernameElement.textContent);
-    popupEditProfile.setInputValue('about', userInfoElement.textContent);
-
+    popupEditProfile.setInputValue('name', user.name);
+    popupEditProfile.setInputValue('about', user.about);
     popupEditProfile.open();
   });
 
