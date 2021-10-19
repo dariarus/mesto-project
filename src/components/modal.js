@@ -19,7 +19,6 @@ export class Popup {
     document.addEventListener('keydown', (evt) => {
       this._handleEscClose(evt);
     });
-    this._formElement.dispatchEvent(new Event('opened')); // превращаем функцию open в событие
   }
 
   close(currentPopup) {
@@ -50,6 +49,7 @@ export class PopupWithImage extends Popup {
 
   open(data) {
     super.open();
+    console.log(data);
     this._popupElement.querySelector('.popup__opened-image').src = data.link;
     this._popupElement.querySelector('.popup__image-signature').textContent = data.name;
   }
@@ -61,6 +61,11 @@ export class PopupWithForm extends Popup {
     super(popupSelector);
     this._handlerSubmitForm = handlerSubmitForm;
     this._setDefaultEventListeners();
+  }
+
+  open() {
+    super.open();
+    this._formElement.dispatchEvent(new Event('opened')); // превращаем функцию open в событие
   }
 
   _getInputValues() {
