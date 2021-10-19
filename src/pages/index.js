@@ -2,7 +2,7 @@ import './index.css'; //подключить в файл точки входа �
 
 import {validationConfig} from "../components/variables.js";
 import {init as initAvatar} from "../components/avatar.js";
-import Section from "../components/Section";
+import Section from "../components/Section.js";
 import FormValidator from "../components/validate.js"
 import {Card} from "../components/card";
 import Api from "../components/api.js";
@@ -106,7 +106,7 @@ function initCards(user) {
 function initFormValidator(popup) {
   const formValidator = new FormValidator(validationConfig, popup._formElement);
   formValidator.enableValidation();
-  popup._formElement.addEventListener('opened', () => {
+  popup._formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
     formValidator.hideInitialInputError();
     formValidator.toggleButtonInPopup();
   })
