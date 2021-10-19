@@ -1,20 +1,26 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
 import {validationConfig, userSelectors} from "../components/variables.js";
-import {init as initAvatar} from "../components/avatar.js";
 import UserInfo from "../components/UserInfo.js";
-import Avatar from "../components/avatar.js";
+import Avatar from "../components/Avatar.js";
 import Section from "../components/Section.js";
-import FormValidator from "../components/validate.js"
-import {Card} from "../components/card";
-import Api from "../components/api.js";
-import {api} from "../components/api.js";
-import {PopupWithForm, PopupWithImage} from "../components/modal";
+import FormValidator from "../components/FormValidate.js"
+import Card from "../components/Card";
+import Api from "../components/Api.js";
+import PopupWithForm from "../components/PopupWithForm";
+import PopupWithImage from "../components/PopupWithImage";
 
-export let userInfo;
-let cardsSection;
+
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
+let userInfo;
 
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
+  headers: {
+    authorization: '020e494d-03bf-4222-970c-2fbceefd04a5',
+    'Content-Type': 'application/json'
+  }
+});
 
 window.onload = function () {
   api.getUser()
@@ -30,13 +36,6 @@ window.onload = function () {
     });
 };
 
-// const api = new Api({
-//     baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
-//     headers: {
-//       authorization: '020e494d-03bf-4222-970c-2fbceefd04a5',
-//       'Content-Type': 'application/json'
-//     }
-//   });
 
 function initUserInfo(userData, userSelectors) {
   const initUserInfo = new UserInfo(userSelectors);
@@ -50,8 +49,7 @@ function initUserInfo(userData, userSelectors) {
 function initCards(user) {
   api.getCards()
     .then((cardList) => {
-      // cardList.reverse();
-      cardsSection = new Section({
+      let cardsSection = new Section({
         data: cardList,
         renderer: (cardData) => {
           const card = new Card(cardData, '#card-template', {
@@ -127,7 +125,6 @@ function initFormValidator(popup) {
 function initPopupAddCard() {
   const buttonAddCard = document.querySelector('.profile__add-button');
   const popupAddCard = new PopupWithForm('.popup_type_add-card', (popup) => {
-    //evt.preventDefault();
     const buttonSaveCard = popup._popupElement.querySelector('.popup__save-button');
     buttonSaveCard.textContent = "Сохранение...";
 
