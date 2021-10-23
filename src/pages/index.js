@@ -152,10 +152,10 @@ function initPopupEditProfile() { //TODO: связать с юзером, убр
   const buttonEditProfile = document.querySelector('.profile__edit-button');
   const popupEditProfile = new PopupWithForm('.popup_type_edit-profile', (popup) => {
 
-    const buttonSaveProfile = popup._popupElement.querySelector('.popup__save-button');
+    const buttonSaveProfile = popup.popupElement.querySelector('.popup__save-button');
     buttonSaveProfile.textContent = 'Сохранение...';
 
-    const inputValues = popup._getInputValues();
+    const inputValues = popup.getInputValues();
 
     const usernameElement = document.querySelector('.profile__username');
     const userInfoElement = document.querySelector('.profile__user-info');
@@ -192,10 +192,10 @@ function initPopupChangeAvatar() {
   const buttonChangeAvatar = document.querySelector('.profile__edit-avatar-button');
   const popupChangeAvatar = new PopupWithForm('.popup_type_update-avatar', (popup) => {
 
-    const buttonSubmitEditAvatar = popup._popupElement.querySelector('.popup__save-button');
+    const buttonSubmitEditAvatar = popup.popupElement.querySelector('.popup__save-button');
     buttonSubmitEditAvatar.textContent = 'Сохранение...';
 
-    const inputValues = popup._getInputValues();
+    const inputValues = popup.getInputValues();
 
     api.updateAvatarUrl(inputValues.avatar)
       .then(user => {

@@ -4,26 +4,21 @@ export default class FormValidator {
   constructor(options, validatingFormElement) {
     this._options = options;
     this._validatingFormElement = validatingFormElement;
-    this._inputSelector = this._validatingFormElement.querySelector(this._options.inputSelector);
-    this._submitButtonSelector = this._validatingFormElement.querySelector(this._options.submitButtonSelector);
-    this._inputErrorClass = this._validatingFormElement.querySelector(this._options.inputErrorClass);
-    this._errorClass = this._validatingFormElement.querySelector(this._options.errorClass);
-    this._inactiveButtonClass = this._validatingFormElement.querySelector(this._options.inactiveButtonClass);
     this._inputList = Array.from(this._validatingFormElement.querySelectorAll(this._options.inputSelector));
     this._buttonElement = this._validatingFormElement.querySelector(this._options.submitButtonSelector);
   }
 
   _showInputError(inputElement, errorMessage) {
     const errorElement = this._validatingFormElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add(this.inputErrorClass);
+    inputElement.classList.add(this._options.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(this.errorClass);
+    errorElement.classList.add(this._options.errorClass);
   }
 
   _hideInputError(inputElement) {
     const errorElement = this._validatingFormElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.remove(this.inputErrorClass);
-    errorElement.classList.remove(this.errorClass);
+    inputElement.classList.remove(this._options.inputErrorClass);
+    errorElement.classList.remove(this._options.errorClass);
     errorElement.textContent = '';
   }
 

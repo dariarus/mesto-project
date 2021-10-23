@@ -1,10 +1,11 @@
-import Popup from "./Popup";
+import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, handlerSubmitForm) {
     super(popupSelector);
     this._handlerSubmitForm = handlerSubmitForm;
     this.formElement = this.popupElement.querySelector('.popup__form');
+    this._inputList = this.popupElement.querySelectorAll('.popup__item');
     this._setDefaultEventListeners();
   }
 
@@ -13,9 +14,7 @@ export default class PopupWithForm extends Popup {
     this.formElement.dispatchEvent(new Event('opened')); // превращаем функцию open в событие
   }
 
-  _getInputValues() {
-    // достаём все элементы полей
-    this._inputList = this.popupElement.querySelectorAll('.popup__item');
+  getInputValues() {
     // создаём пустой объект
     this._formValues = {};
     // добавляем в этот объект значения всех полей
@@ -28,7 +27,6 @@ export default class PopupWithForm extends Popup {
   }
 
   setInputValue(inputName, inputValue) {
-    this._inputList = this.popupElement.querySelectorAll('.popup__item');
     this._inputList.forEach(input => {
       if (input.name === inputName) {
         input.value = inputValue;
