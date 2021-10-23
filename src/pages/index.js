@@ -114,9 +114,9 @@ function initCards(user) {
 
 
 function initFormValidator(popup) {
-  const formValidator = new FormValidator(validationConfig, popup._formElement);
+  const formValidator = new FormValidator(validationConfig, popup.formElement);
   formValidator.enableValidation();
-  popup._formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
+  popup.formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
     formValidator.hideInitialInputError();
     formValidator.toggleButtonInPopup();
   })
@@ -125,10 +125,10 @@ function initFormValidator(popup) {
 function initPopupAddCard() {
   const buttonAddCard = document.querySelector('.profile__add-button');
   const popupAddCard = new PopupWithForm('.popup_type_add-card', (popup) => {
-    const buttonSaveCard = popup._popupElement.querySelector('.popup__save-button');
+    const buttonSaveCard = popup.popupElement.querySelector('.popup__save-button');
     buttonSaveCard.textContent = "Сохранение...";
 
-    const inputValues = popup._getInputValues();
+    const inputValues = popup.getInputValues();
 
     api.createNewCard(inputValues.name, inputValues.link)
       .then(cardData => {
