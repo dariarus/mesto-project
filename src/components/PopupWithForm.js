@@ -1,4 +1,4 @@
-import Popup from "./Popup";
+import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, handlerSubmitForm) {
@@ -35,21 +35,15 @@ export default class PopupWithForm extends Popup {
     })
   }
 
-  close(currentPopup) {
-    super.close(currentPopup);
+  close() {
+    super.close();
     this._formElement.reset();
   }
 
   _setDefaultEventListeners() {
-    // const buttonSaveCard = this._popupElement.querySelector('.popup__save-button');
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._handlerSubmitForm(this);
-      this.close(this._popupElement);
     });
-    this._formElement.addEventListener('mousedown', (evt) => {
-      evt.stopPropagation();
-    })
   }
-
 }
