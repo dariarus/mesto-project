@@ -1,6 +1,6 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig} from "../components/variables.js";
+import {validationConfig} from "../utils/variables.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
