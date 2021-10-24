@@ -19,6 +19,11 @@ export default class Card {
       .cloneNode(true);
   }
 
+  refreshLikesCount() {
+    const countLikeElement = this._cardElement.querySelector('.gallery-item__like-count');
+    countLikeElement.textContent = this._data.likes.length;
+  }
+
   _addCardInfo() {
     this._cardElement.querySelector('.gallery-item__signature').textContent = this._data.name;
     this._cardImageElement.src = this._data.link;
@@ -30,13 +35,14 @@ export default class Card {
     this._likeElement.classList.add('gallery-item__like_active');
   }
 
-  removeLikeColor() {
-    this._likeElement.classList.remove('gallery-item__like_active');
+  updateLikes(newLikes) { 
+    this._data.likes = newLikes;
+    this.setLikeColor();
+    this.refreshLikesCount();
   }
 
-  refreshLikesCount() {
-    const countLikeElement = this._cardElement.querySelector('.gallery-item__like-count');
-    countLikeElement.textContent = this._data.likes.length;
+  removeLikeColor() {
+    this._likeElement.classList.remove('gallery-item__like_active');
   }
 
   removeDeleteElement() {

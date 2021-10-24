@@ -76,10 +76,7 @@ function initCards(user) {
               } else {
                 api.putLike(cardData._id)
                   .then(likedCard => {
-                    cardData.likes = likedCard.likes;
-                    // изменение класса для кикнутого лайка (установленного и снятого)
-                    card.setLikeColor();
-                    card.refreshLikesCount();
+                    card.updateLikes(likedCard.likes);
                   })
                   .catch((err) => {
                     console.log(err);
