@@ -1,18 +1,18 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig, userSelectors} from "../components/variables.js";
+import {validationConfig, userSelectors} from "../utils/variables.js";
 import UserInfo from "../components/UserInfo.js";
 import Avatar from "../components/Avatar.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
-import Card from "../components/Card";
+import Card from "../components/Card.js";
 import Api from "../components/Api.js";
-import PopupWithForm from "../components/PopupWithForm";
-import PopupWithImage from "../components/PopupWithImage";
-
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
 let userInfo;
+let cardsSection;
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
@@ -33,7 +33,10 @@ window.onload = function () {
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 };
 
 
@@ -45,11 +48,10 @@ function initUserInfo(userData, userSelectors) {
   userAvatar.setAvatar();
 }
 
-
 function initCards(user) {
   api.getCards()
     .then((cardList) => {
-      let cardsSection = new Section({
+      cardsSection = new Section({
         data: cardList,
         renderer: (cardData) => {
           const card = new Card(cardData, '#card-template', {
@@ -99,8 +101,8 @@ function initCards(user) {
           if (cardData.likes && cardData.likes.some(like => like._id === user._id)) {
             card.setLikeColor();
           }
-          if (user._id === cardData.owner._id) {
-            card.setDeleteElement();
+          if (user._id !== cardData.owner._id) {
+            card.removeDeleteElement();
           }
           cardsSection.setItem(cardElement);
         }
@@ -112,14 +114,13 @@ function initCards(user) {
     })
 }
 
-
 function initFormValidator(popup) {
   const formValidator = new FormValidator(validationConfig, popup._formElement);
   formValidator.enableValidation();
-  popup._formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
-    formValidator.hideInitialInputError();
-    formValidator.toggleButtonInPopup();
-  })
+  // popup._formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
+  //   formValidator.hideInitialInputError();
+  //   formValidator.toggleButtonInPopup();
+  // })
 }
 
 function initPopupAddCard() {
@@ -133,6 +134,7 @@ function initPopupAddCard() {
     api.createNewCard(inputValues.name, inputValues.link)
       .then(cardData => {
         cardsSection.renderItem(cardData);
+        popup.close();
       })
       .catch((err) => {
         console.log(err);
@@ -148,7 +150,7 @@ function initPopupAddCard() {
   initFormValidator(popupAddCard);
 }
 
-function initPopupEditProfile() { //TODO: связать с юзером, убрать контент из разметки
+function initPopupEditProfile() {
   const buttonEditProfile = document.querySelector('.profile__edit-button');
   const popupEditProfile = new PopupWithForm('.popup_type_edit-profile', (popup) => {
 
@@ -165,6 +167,7 @@ function initPopupEditProfile() { //TODO: связать с юзером, убр
       .then(result => {
         usernameElement.textContent = result.name;
         userInfoElement.textContent = result.about;
+        popup.close();
       })
       .catch((err) => {
         console.log(err);
@@ -173,8 +176,6 @@ function initPopupEditProfile() { //TODO: связать с юзером, убр
         buttonSaveProfile.textContent = 'Сохранить';
       })
   });
-
-
 
   buttonEditProfile.addEventListener('click', () => {
     const userInfo = new UserInfo(userSelectors);
@@ -201,6 +202,7 @@ function initPopupChangeAvatar() {
       .then(user => {
         const imageAvatar = document.querySelector('.profile__avatar');
         imageAvatar.src = user.avatar;
+        popup.close();
       })
       .catch((err) => {
         console.log(err);
