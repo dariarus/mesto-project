@@ -2,7 +2,6 @@ import './index.css'; //подключить в файл точки входа �
 
 import {validationConfig, userSelectors} from "../components/variables.js";
 import UserInfo from "../components/UserInfo.js";
-import Avatar from "../components/Avatar.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
 import Card from "../components/Card";
@@ -10,9 +9,9 @@ import Api from "../components/Api.js";
 import PopupWithForm from "../components/PopupWithForm";
 import PopupWithImage from "../components/PopupWithImage";
 
-
+let userData;
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
-let userInfo;
+const initUserInfo = new UserInfo(userSelectors);
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
@@ -25,26 +24,17 @@ const api = new Api({
 window.onload = function () {
   api.getUser()
     .then(user => {
-      userInfo = user;
+      userData = user;
     })
     .then(() => {
-      initUserInfo(userInfo, userSelectors);
-      initCards(userInfo);
+      initUserInfo.setUserInfo(userData);
+      initUserInfo.setUserAvatar(userData);
+      initCards(userData);
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
     });
 };
-
-
-function initUserInfo(userData, userSelectors) {
-  const initUserInfo = new UserInfo(userSelectors);
-  initUserInfo.setUserInfo(userInfo);
-
-  const userAvatar = new Avatar(userData);
-  userAvatar.setAvatar();
-}
-
 
 function initCards(user) {
   api.getCards()

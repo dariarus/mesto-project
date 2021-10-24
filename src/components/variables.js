@@ -9,7 +9,8 @@ const validationConfig = {
 
 const userSelectors = {
   'name': '.profile__username',
-  'about': '.profile__user-info'
+  'about': '.profile__user-info',
+  'avatar': '.profile__avatar'
 }
 
 export {validationConfig, userSelectors};
