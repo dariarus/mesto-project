@@ -16,10 +16,11 @@ export default class UserInfo {
   getUserInfo() {
     this._userNameSelector.textContent = this._user.name;
     this._aboutUserSelector.textContent = this._user.about; 
+    this._avatarUserSelector.src = this._user.avatar;
   }
 
-  getUserAvatar() {
-    this._avatarUserSelector.src = this._user.avatar;
+  setUserAvatar(newAvatar) {
+    this._avatarUserSelector.src = newAvatar; 
   }
 
   getUserId() {

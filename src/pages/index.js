@@ -27,7 +27,6 @@ window.onload = function () {
     .then(user => {
       initUserInfo = new UserInfo(user);
       initUserInfo.getUserInfo();
-      initUserInfo.getUserAvatar();
       initCards(user);
       initPopupAddCard();
       initPopupEditProfile();
@@ -183,7 +182,7 @@ function initPopupChangeAvatar() {
 
     api.updateAvatarUrl(inputValues.avatar)
       .then(user => {
-        initUserInfo.getUserAvatar(user);
+        initUserInfo.setUserAvatar(user.avatar);
         popup.close();
       })
       .catch((err) => {
