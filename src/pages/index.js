@@ -32,6 +32,9 @@ window.onload = function () {
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
