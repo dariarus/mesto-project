@@ -21,33 +21,19 @@ export default class PopupWithForm extends Popup {
     this._inputList.forEach(input => {
       this._formValues[input.name] = input.value; // создание ключа input.name внутри объекта со значением input.value
     });
-    //  this._formValues['likes'] = [];
     // возвращаем объект значений
     return this._formValues;
   }
 
-  setInputValue(inputName, inputValue) {
-    this._inputList.forEach(input => {
-      if (input.name === inputName) {
-        input.value = inputValue;
-      }
-    })
-  }
-
-  close(currentPopup) {
-    super.close(currentPopup);
+  close() {
+    super.close();
     this.formElement.reset();
   }
 
   _setDefaultEventListeners() {
-    // const buttonSaveCard = this._popupElement.querySelector('.popup__save-button');
     this.formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._handlerSubmitForm(this);
-      this.close(this.popupElement);
     });
-    this.formElement.addEventListener('mousedown', (evt) => {
-      evt.stopPropagation();
-    })
   }
 }

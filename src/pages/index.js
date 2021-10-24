@@ -108,10 +108,6 @@ function initCards(user) {
 function initFormValidator(popup) {
   const formValidator = new FormValidator(validationConfig, popup.formElement);
   formValidator.enableValidation();
-  popup.formElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
-    formValidator.hideInitialInputError();
-    formValidator.toggleButtonInPopup();
-  })
 }
 
 function initPopupAddCard() {
@@ -188,6 +184,7 @@ function initPopupChangeAvatar() {
     api.updateAvatarUrl(inputValues.avatar)
       .then(user => {
         initUserInfo.getUserAvatar(user);
+        popup.close();
       })
       .catch((err) => {
         console.log(err);

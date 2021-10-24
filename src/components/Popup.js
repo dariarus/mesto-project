@@ -8,17 +8,12 @@ export default class Popup {
 
   _handleEscClose(evt) {
     if (evt.key === 'Escape') {
-        this.popupElement.classList.remove('popup_opened');//});
         this.close();
     }
   }
 
   open() {
     this.popupElement.classList.add('popup_opened');
-    // добавление обработчика на документ при нажатии кнопки ESC
-    document.addEventListener('keydown', (evt) => {
-      this._handleEscClose(evt);
-    });
     document.addEventListener('keydown', this._handleEscCloseBound);
   }
 
@@ -32,8 +27,9 @@ export default class Popup {
       this.close(this.popupElement);
     });
     this.popupElement.addEventListener('mousedown', (evt) => {
-      evt.stopPropagation();
-      this.close(evt.target);
+      if (evt.target.classList.contains('popup_opened')) {
+        this.close();
+      }
     });
   }
 }
