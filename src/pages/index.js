@@ -161,7 +161,10 @@ function initPopupEditProfile() {
   });
 
   buttonEditProfile.addEventListener('click', () => {
-    initUserInfo.getUserInfo();
+    const newUser = initUserInfo.setUserInfo();
+    popupEditProfile.setInputValue('name', newUser.name);
+    popupEditProfile.setInputValue('about', newUser.about);
+
     popupEditProfile.open();
   });
 

@@ -24,6 +24,14 @@ export default class PopupWithForm extends Popup {
     // возвращаем объект значений
     return this._formValues;
   }
+  
+  setInputValue(inputName, inputValue) {
+    this._inputList.forEach(input => {
+      if (input.name === inputName) {
+        input.value = inputValue;
+      }
+    })
+  }
 
   close() {
     super.close();
