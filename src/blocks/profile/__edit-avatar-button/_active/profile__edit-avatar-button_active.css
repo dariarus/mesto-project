@@ -1,5 +1,0 @@
-.profile__edit-avatar-button_active {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 1s, visibility 0s;
-}

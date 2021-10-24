@@ -1,8 +1,8 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig, userSelectors} from "../utils/variables.js";
+
+import {validationConfig} from "../utils/variables.js";
 import UserInfo from "../components/UserInfo.js";
-import Avatar from "../components/Avatar.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
 import Card from "../components/Card.js";
@@ -10,9 +10,9 @@ import Api from "../components/Api.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 
-const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
-let userInfo;
+let initUserInfo;
 let cardsSection;
+const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
@@ -25,28 +25,19 @@ const api = new Api({
 window.onload = function () {
   api.getUser()
     .then(user => {
-      userInfo = user;
-    })
-    .then(() => {
-      initUserInfo(userInfo, userSelectors);
-      initCards(userInfo);
+      initUserInfo = new UserInfo(user);
+      initUserInfo.getUserInfo();
+      initUserInfo.getUserAvatar();
+      initCards(user);
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
     })
     .catch((err) => {
       console.log(err);
-    })
+    });
 };
 
-
-function initUserInfo(userData, userSelectors) {
-  const initUserInfo = new UserInfo(userSelectors);
-  initUserInfo.setUserInfo(userInfo);
-
-  const userAvatar = new Avatar(userData);
-  userAvatar.setAvatar();
-}
 
 function initCards(user) {
   api.getCards()
@@ -178,11 +169,7 @@ function initPopupEditProfile() {
   });
 
   buttonEditProfile.addEventListener('click', () => {
-    const userInfo = new UserInfo(userSelectors);
-    const user = userInfo.getUserInfo();
-
-    popupEditProfile.setInputValue('name', user.name);
-    popupEditProfile.setInputValue('about', user.about);
+    initUserInfo.getUserInfo();
     popupEditProfile.open();
   });
 
@@ -200,9 +187,7 @@ function initPopupChangeAvatar() {
 
     api.updateAvatarUrl(inputValues.avatar)
       .then(user => {
-        const imageAvatar = document.querySelector('.profile__avatar');
-        imageAvatar.src = user.avatar;
-        popup.close();
+        initUserInfo.getUserAvatar(user);
       })
       .catch((err) => {
         console.log(err);
