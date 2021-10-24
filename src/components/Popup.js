@@ -1,12 +1,16 @@
 export default class Popup {
   constructor(popupSelector) {
     this.popupElement = document.querySelector(popupSelector);
+    this._formElement = this._popupElement.querySelector('.popup__form');
+    this._handleEscCloseBound = this._handleEscClose.bind(this)
+
     this._setDefaultPopupEventListeners();
   }
 
   _handleEscClose(evt) {
     if (evt.key === 'Escape') {
         this.popupElement.classList.remove('popup_opened');//});
+        this.close();
     }
   }
 
@@ -16,14 +20,12 @@ export default class Popup {
     document.addEventListener('keydown', (evt) => {
       this._handleEscClose(evt);
     });
+    document.addEventListener('keydown', this._handleEscCloseBound);
   }
 
-  close(currentPopup) {
-    currentPopup.classList.remove('popup_opened');
-    // удаление обрабтчика с документа, когда не нужно отслеживать кнопку ESC, т.к. попап закрыт
-    document.removeEventListener('keydown', (evt) => {
-      this._handleEscClose(evt);
-    });
+  close() {
+    this.popupElement.classList.remove('popup_opened');
+    document.removeEventListener('keydown', this._handleEscCloseBound);
   }
 
   _setDefaultPopupEventListeners() { // слушатель на кнопке закрытия каждого из попапов и закрытие по клику на оверлэй
@@ -34,5 +36,5 @@ export default class Popup {
       evt.stopPropagation();
       this.close(evt.target);
     });
-  };
+  }
 }
