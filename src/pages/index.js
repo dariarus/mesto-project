@@ -1,7 +1,7 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
 
-import {validationConfig} from "../utils/variables.js";
+import {validationConfig, userSelectors} from "../utils/variables.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
@@ -10,9 +10,9 @@ import Api from "../components/Api.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 
-let initUserInfo;
 let cardsSection;
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
+const initUserInfo = new UserInfo(userSelectors);
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
@@ -25,8 +25,7 @@ const api = new Api({
 window.onload = function () {
   api.getUser()
     .then(user => {
-      initUserInfo = new UserInfo(user);
-      initUserInfo.getUserInfo();
+      initUserInfo.getUserInfo(user);
       initCards(user);
       initPopupAddCard();
       initPopupEditProfile();
@@ -142,14 +141,10 @@ function initPopupEditProfile() {
 
     const inputValues = popup.getInputValues();
 
-    const usernameElement = document.querySelector('.profile__username');
-    const userInfoElement = document.querySelector('.profile__user-info');
-
     // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
     api.saveProfile(inputValues.name, inputValues.about)
       .then(result => {
-        usernameElement.textContent = result.name;
-        userInfoElement.textContent = result.about;
+        initUserInfo.getUserInfo(result);
         popup.close();
       })
       .catch((err) => {

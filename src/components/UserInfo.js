@@ -1,22 +1,21 @@
 export default class UserInfo {
-  constructor(user) {
-    this._user = user;
-
-    const userSelectors = {
-      'name': '.profile__username',
-      'about': '.profile__user-info',
-      'avatar': '.profile__avatar'
-    }
-
-    this._userNameSelector = document.querySelector(userSelectors.name);
-    this._aboutUserSelector = document.querySelector(userSelectors.about);
-    this._avatarUserSelector = document.querySelector(userSelectors.avatar);
+  constructor(userSelectors) {
+    this._userName = document.querySelector(userSelectors.name);
+    this._aboutUser = document.querySelector(userSelectors.about);
+    this._avatarUser = document.querySelector(userSelectors.avatar);
   }
 
-  getUserInfo() {
-    this._userNameSelector.textContent = this._user.name;
-    this._aboutUserSelector.textContent = this._user.about; 
-    this._avatarUserSelector.src = this._user.avatar;
+  getUserInfo(user) {
+    this._userName.textContent = user.name;
+    this._aboutUser.textContent = user.about; 
+    this._avatarUser.src = user.avatar;
+
+    return {
+      'name': user.name,
+      'about': user.about,
+      'avatar': user.avatar,
+      'id': user._id
+    }
   }
 
   setUserAvatar(newAvatar) {
@@ -29,8 +28,8 @@ export default class UserInfo {
 
   setUserInfo() {
     this._user = {};
-    this._user.name = this._userNameSelector.textContent;
-    this._user.about = this._aboutUserSelector.textContent;
+    this._user.name = this._userName.textContent;
+    this._user.about = this._aboutUser.textContent;
 
     return this._user;
   }
