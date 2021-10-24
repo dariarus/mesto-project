@@ -1,5 +1,3 @@
-import {toggleButtonState} from "./utils.js";
-
 export default class FormValidator {
   constructor(options, validatingFormElement) {
     this._options = options;
@@ -20,6 +18,16 @@ export default class FormValidator {
     inputElement.classList.remove(this._options.inputErrorClass);
     errorElement.classList.remove(this._options.errorClass);
     errorElement.textContent = '';
+  }
+
+  _toggleButtonState(buttonIsActive) {
+    if (buttonIsActive) {
+      this._buttonElement.classList.remove(this._options.inactiveButtonClass);
+      this._buttonElement.removeAttribute('disabled');
+    } else {
+      this._buttonElement.classList.add(this._options.inactiveButtonClass);
+      this._buttonElement.setAttribute('disabled', 'disabled');
+    }
   }
 
   hideInitialInputError() {
@@ -51,7 +59,7 @@ export default class FormValidator {
 
   _validateAndToggleButtonState() {
     const buttonIsActive = !this._hasInvalidInput();
-    toggleButtonState(this._buttonElement, this._options.inactiveButtonClass, buttonIsActive)
+    this._toggleButtonState(buttonIsActive);
   };
 
   toggleButtonInPopup() {
@@ -71,6 +79,10 @@ export default class FormValidator {
         this._validateAndToggleButtonState();
       });
     });
+    this._validatingFormElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
+      this.hideInitialInputError();
+      this.toggleButtonInPopup();
+    })
   }
 
   enableValidation() {
