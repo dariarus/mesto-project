@@ -7,10 +7,4 @@ const validationConfig = {
   errorClass: 'popup__input-error_active'
 }
 
-const userSelectors = {
-  'name': '.profile__username',
-  'about': '.profile__user-info',
-  'avatar': '.profile__avatar'
-}
-
-export {validationConfig, userSelectors};
+export {validationConfig};

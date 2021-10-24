@@ -1,6 +1,6 @@
 import './index.css'; //подключить в файл точки входа основной файл стилей - работает только для Webpack
 
-import {validationConfig, userSelectors} from "../components/variables.js";
+import {validationConfig} from "../components/variables.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import FormValidator from "../components/FormValidate.js"
@@ -9,9 +9,10 @@ import Api from "../components/Api.js";
 import PopupWithForm from "../components/PopupWithForm";
 import PopupWithImage from "../components/PopupWithImage";
 
-let userData;
+
+let initUserInfo;
 const popupOpenPhoto = new PopupWithImage('.popup_type_open-photo');
-const initUserInfo = new UserInfo(userSelectors);
+
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-1',
@@ -24,12 +25,10 @@ const api = new Api({
 window.onload = function () {
   api.getUser()
     .then(user => {
-      userData = user;
-    })
-    .then(() => {
-      initUserInfo.setUserInfo(userData);
-      initUserInfo.setUserAvatar(userData);
-      initCards(userData);
+      initUserInfo = new UserInfo(user);
+      initUserInfo.getUserInfo();
+      initUserInfo.getUserAvatar();
+      initCards(user);
       initPopupAddCard();
       initPopupEditProfile();
       initPopupChangeAvatar();
@@ -165,13 +164,8 @@ function initPopupEditProfile() { //TODO: связать с юзером, убр
   });
 
 
-
   buttonEditProfile.addEventListener('click', () => {
-    const userInfo = new UserInfo(userSelectors);
-    const user = userInfo.getUserInfo();
-
-    popupEditProfile.setInputValue('name', user.name);
-    popupEditProfile.setInputValue('about', user.about);
+    initUserInfo.getUserInfo();
     popupEditProfile.open();
   });
 
@@ -189,8 +183,7 @@ function initPopupChangeAvatar() {
 
     api.updateAvatarUrl(inputValues.avatar)
       .then(user => {
-        const imageAvatar = document.querySelector('.profile__avatar');
-        imageAvatar.src = user.avatar;
+        initUserInfo.getUserAvatar(user);
       })
       .catch((err) => {
         console.log(err);
