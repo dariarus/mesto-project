@@ -27,10 +27,9 @@ export default class UserInfo {
   }
 
   setUserInfo() {
-    this._user = {};
-    this._user.name = this._userName.textContent;
-    this._user.about = this._aboutUser.textContent;
-
-    return this._user;
+    return {
+      'name': this._userName.textContent,
+      'about': this._aboutUser.textContent
+    };
   }
 }
