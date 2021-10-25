@@ -25,7 +25,7 @@ const api = new Api({
 window.onload = function () {
   api.getUser()
     .then(user => {
-      initUserInfo.getUserInfo(user);
+      initUserInfo.setUserInfo(user);
       initCards(user);
       initPopupAddCard();
       initPopupEditProfile();
@@ -144,7 +144,7 @@ function initPopupEditProfile() {
     // вставка новых значений с помощью textContent на страницу из полей формы, значения которых извлекаются с помощью value
     api.saveProfile(inputValues.name, inputValues.about)
       .then(result => {
-        initUserInfo.getUserInfo(result);
+        initUserInfo.setUserInfo(result);
         popup.close();
       })
       .catch((err) => {
@@ -156,7 +156,7 @@ function initPopupEditProfile() {
   });
 
   buttonEditProfile.addEventListener('click', () => {
-    const newUser = initUserInfo.setUserInfo();
+    const newUser = initUserInfo.getUserInfo();
     popupEditProfile.setInputValue('name', newUser.name);
     popupEditProfile.setInputValue('about', newUser.about);
 
