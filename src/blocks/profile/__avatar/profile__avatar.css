@@ -3,6 +3,8 @@
   height: 120px;
   border-radius: 50%;
   transition: opacity .2s ease-in;
+  object-fit: cover;
+  object-position: center;
 }
 
 @media screen and (max-width: 464px) {

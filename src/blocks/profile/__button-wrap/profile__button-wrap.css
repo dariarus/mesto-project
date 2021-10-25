@@ -1,3 +1,9 @@
 .profile__button-wrap {
   position: relative;
 }
+
+.profile__button-wrap:hover .profile__edit-avatar-button {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s, visibility 0s;
+}
