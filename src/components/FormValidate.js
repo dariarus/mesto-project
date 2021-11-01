@@ -75,11 +75,10 @@ export default class FormValidator {
       inputElement.addEventListener('input', () => {
         // Внутри колбэка вызовем validateInput, передав ей форму и проверяемый элемент
         this._validateInput(inputElement);
-        // (6.)
         this._validateAndToggleButtonState();
       });
     });
-    this._validatingFormElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл FormValidator.js)
+    this._validatingFormElement.addEventListener('opened', () => { // подписываемся на кастомное событие (см. файл PopupWithForm.js)
       this.hideInitialInputError();
       this.toggleButtonInPopup();
     })
